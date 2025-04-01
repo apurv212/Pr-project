@@ -17,22 +17,22 @@ const Portfolio = () => {
 
   const projects = [
     {
-      image: './src/Assets/one_note.png', // Image for Project 1
+      image: '../src/Assets/one_note.png', // Image for Project 1
       title: 'One Note App',
       description: 'A note-taking app that helps you organize your thoughts and ideas.',
-      githubLink: 'https://github.com/username/project1',
+      githubLink: 'https://github.com/apurv212',
     },
     {
-      image: './src/Assets/to_do.png', // Image for Project 2
+      image: '../src/Assets/to_do.png', // Image for Project 2
       title: 'To-Do App',
       description: 'A simple to-do list app to manage your tasks efficiently.',
-      githubLink: 'https://github.com/username/project2',
+      githubLink: 'https://github.com/apurv212',
     },
     {
       image: './src/Assets/spring_boot.png', // Image for Project 3
       title: 'Spring Boot Application',
       description: 'A full-stack web application built with Spring Boot and React.',
-      githubLink: 'https://github.com/username/project3',
+      githubLink: 'https://github.com/apurv212',
     },
   ];
 
@@ -207,7 +207,7 @@ const Portfolio = () => {
                 darkMode ? 'border-indigo-400' : 'border-indigo-500'
               }`}>
                 <img
-                  src="./src/Assets/apurv college coat.png"
+                  src="./src/Assets/apurv_college_coat.png"
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
