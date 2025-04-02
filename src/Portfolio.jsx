@@ -312,15 +312,15 @@ const Portfolio = () => {
           
           <div className="max-w-3xl mx-auto">
             <div className="flex flex-col md:flex-row justify-center space-y-6 md:space-y-0 md:space-x-12">
-              <a href="#" className="flex items-center group">
+              <a href="mailto:sharshit416@gmail.com" className="flex items-center group">
                 <Mail className="mr-3 group-hover:text-indigo-300 transition-colors" size={24} />
                 <span className="group-hover:text-indigo-300 transition-colors">sharshit416@gmail.com</span>
               </a>
-              <a href="#" className="flex items-center group">
+              <a href="http://www.linkedin.com/in/apurv-s-023564269" className="flex items-center group">
                 <Linkedin className="mr-3 group-hover:text-indigo-300 transition-colors" size={24} />
                 <span className="group-hover:text-indigo-300 transition-colors">linkedin.com/in/apurv-s-023564269</span>
               </a>
-              <a href="#" className="flex items-center group">
+              <a href="https://github.com/apurv212" className="flex items-center group">
                 <Github className="mr-3 group-hover:text-indigo-300 transition-colors" size={24} />
                 <span className="group-hover:text-indigo-300 transition-colors">github.com/apurv212</span>
               </a>
