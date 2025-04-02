@@ -17,19 +17,19 @@ const Portfolio = () => {
 
   const projects = [
     {
-      image: '../src/Assets/one_note.png', // Image for Project 1
+      image: '/public/one_note.png', 
       title: 'One Note App',
       description: 'A note-taking app that helps you organize your thoughts and ideas.',
       githubLink: 'https://github.com/apurv212',
     },
     {
-      image: '../src/Assets/to_do.png', // Image for Project 2
+      image: '/public/to_do.png',
       title: 'To-Do App',
       description: 'A simple to-do list app to manage your tasks efficiently.',
       githubLink: 'https://github.com/apurv212',
     },
     {
-      image: './src/Assets/spring_boot.png', // Image for Project 3
+      image: '/public/spring_boot.png', 
       title: 'Spring Boot Application',
       description: 'A full-stack web application built with Spring Boot and React.',
       githubLink: 'https://github.com/apurv212',
@@ -207,7 +207,7 @@ const Portfolio = () => {
                 darkMode ? 'border-indigo-400' : 'border-indigo-500'
               }`}>
                 <img
-                  src="./src/Assets/apurv_college_coat.png"
+                  src="/public/apurv_college_coat.png"
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -332,7 +332,7 @@ const Portfolio = () => {
                 darkMode ? 'bg-gray-200 text-indigo-950 hover:bg-white' : 'bg-white text-indigo-900 hover:bg-gray-100'
               }`}  >
                <a 
-    href="./src/Assets/apurv_shashvat_resume25.pdf" 
+    href="/public/apurv_shashvat_resume25.pdf" 
     download="apurv_shashvat.pdf"  
     className="w-full h-full inline-block"
   >
