@@ -1,1 +1,18 @@
 @import "tailwindcss";
+@keyframes typeRepeat {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    16.67% { /* 0.5s / 3s */
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 1; /* Stay visible until reset */
+    }
+  }
+  
+  .animate-type-repeat {
+    animation: typeRepeat 9s ease-out infinite;
+  }

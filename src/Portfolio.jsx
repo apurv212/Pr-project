@@ -1,57 +1,29 @@
+// Portfolio.jsx
 import React, { useState, useEffect } from "react";
 import ReactGA from "react-ga4";
-
-// Using individual imports to avoid issues
-import { Menu } from "lucide-react";
-import { X } from "lucide-react";
-import { ArrowDown } from "lucide-react";
-import { Github } from "lucide-react";
-import { Linkedin } from "lucide-react";
-import { Mail } from "lucide-react";
-import { Sun } from "lucide-react";
-import { Moon } from "lucide-react";
+import Navbar from "./Navbar";
+import Contact from "./Contact";
+import Projects from "./Projectdetails";
+import { ArrowDown, ArrowUp } from "lucide-react";
 
 const TRACKING_ID = "G-H3XLBLJ77Y";
+
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
-    ReactGA.send("pageview"); // Track page views
+    ReactGA.send("pageview");
   }, []);
-
-  const projects = [
-    {
-      image: "/one_note.png",
-      title: "One Note App",
-      description:
-        "A note-taking app that helps you organize your thoughts and ideas.",
-      githubLink: "https://github.com/apurv212",
-    },
-    {
-      image: "/to_do.png",
-      title: "To-Do App",
-      description: "A simple to-do list app to manage your tasks efficiently.",
-      githubLink: "https://github.com/apurv212",
-    },
-    {
-      image: "/spring_boot.png",
-      title: "Spring Boot Application",
-      description:
-        "A full-stack web application built with Spring Boot and React.",
-      githubLink: "https://github.com/apurv212",
-    },
-  ];
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      const scrollPosition = window.scrollY;
+      setIsScrolled(scrollPosition > 10);
+      setShowScrollTop(scrollPosition > 300);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -78,169 +50,79 @@ const Portfolio = () => {
     setIsMenuOpen(false);
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Text to animate
+  const text = "Hello, I'm Apurv Shashvat";
+
   return (
     <div
       className={`min-h-screen font-sans ${
         darkMode ? "dark bg-gray-900" : "bg-gray-50"
       }`}
     >
-      {/* Header - Sticky and changes background on scroll */}
-      <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          isScrolled
-            ? darkMode
-              ? "bg-gray-800 shadow-md py-2"
-              : "bg-white shadow-md py-2"
-            : "bg-transparent py-4"
-        }`}
-      >
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center">
-            {/* Logo/Name */}
-            <div
-              className={`text-xl font-bold ${
-                darkMode ? "text-indigo-400" : "text-indigo-600"
-              }`}
-            >
-              <span className="transition-all duration-300">
-                Apurv Shashvat
-              </span>
-            </div>
-
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              {["Home", "About Me", "Projects", "Contact"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => {
-                    scrollToSection(item.toLowerCase().replace(/\s+/g, "-"));
-                    ReactGA.event({
-                      category: "Navigation",
-                      action: "Clicked Menu Item",
-                      label: item,
-                    });
-                  }}
-                  className={`transition-colors duration-300 ${
-                    darkMode
-                      ? "text-gray-300 hover:text-indigo-400"
-                      : "text-gray-600 hover:text-indigo-600"
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
-
-              {/* Dark Mode Toggle */}
-              <button
-                onClick={toggleDarkMode}
-                className={`p-2 rounded-full transition-colors ${
-                  darkMode
-                    ? "bg-gray-700 text-yellow-300"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-            </nav>
-
-            {/* Mobile Menu Button */}
-            <div className="md:hidden flex items-center">
-              {/* Dark Mode Toggle for Mobile */}
-              <button
-                onClick={toggleDarkMode}
-                className={`p-2 mr-2 rounded-full transition-colors ${
-                  darkMode
-                    ? "bg-gray-700 text-yellow-300"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                {darkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className={darkMode ? "text-gray-300" : "text-gray-600"}
-              >
-                {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile Navigation Menu */}
-        {isMenuOpen && (
-          <div
-            className={`md:hidden shadow-lg ${
-              darkMode ? "bg-gray-800" : "bg-white"
-            }`}
-          >
-            <div className="flex flex-col px-4 py-2">
-              {["Home", "About Me", "Projects", "Contact"].map((item) => (
-                <button
-                  key={item}
-                  onClick={() =>
-                    scrollToSection(item.toLowerCase().replace(/\s+/g, "-"))
-                  }
-                  className={`py-3 text-left transition-colors duration-300 ${
-                    darkMode
-                      ? "text-gray-300 hover:text-indigo-400"
-                      : "text-gray-600 hover:text-indigo-600"
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-      </header>
+      <Navbar
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+        isScrolled={isScrolled}
+        darkMode={darkMode}
+        toggleDarkMode={toggleDarkMode}
+        scrollToSection={scrollToSection}
+      />
 
       {/* Hero Section */}
-      <section
-        id="home"
-        className="h-screen relative flex items-center justify-center"
-      >
-        {/* Background Image */}
-        <div
-          className={`absolute inset-0 ${
-            darkMode ? "bg-gray-900" : "bg-gray-800"
-          } overflow-hidden`}
+     
+<section
+  id="home"
+  className="h-screen relative flex items-center justify-center"
+>
+  <div
+    className={`absolute inset-0 ${
+      darkMode ? "bg-gray-900" : "bg-gray-800"
+    } overflow-hidden`}
+  >
+    <div
+      className="absolute inset-0 bg-cover bg-center"
+      style={{
+        backgroundImage: "url('/api/placeholder/1600/900')",
+      }}
+    />
+  </div>
+
+  <div className="relative text-center px-4">
+    <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+      {text.split("").map((char, index) => (
+        <span
+          key={index}
+          className="inline-block animate-type-repeat" // Updated class name
+          style={{ animationDelay: `${index * 0.1}s` }} // Staggered delay for each letter
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center "
-            style={{
-              backgroundImage: "url('/api/placeholder/1600/900')",
-            }}
-          />
-        </div>
+          {char === " " ? "\u00A0" : char}
+        </span>
+      ))}
+    </h1>
+    <p className="text-xl md:text-2xl text-gray-200 mb-8">
+      Full Stack Web Developer, Designer
+    </p>
+    <button
+      onClick={() => scrollToSection("projects")}
+      className={`px-6 py-3 text-white rounded-full flex items-center mx-auto transform hover:scale-105 transition-all duration-300 ${
+        darkMode
+          ? "bg-indigo-700 hover:bg-indigo-800"
+          : "bg-indigo-600 hover:bg-indigo-700"
+      }`}
+    >
+      View My Work
+      <ArrowDown className="ml-2" size={18} />
+    </button>
+  </div>
 
-        {/* Content */}
-        <div className="relative text-center px-4">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-            Hello, I'm Apurv Shashvat
-          </h1>
-          <p className="text-xl md:text-2xl text-gray-200 mb-8">
-            Full Stack Web Developer, Designer
-          </p>
-          <button
-            onClick={() => scrollToSection("projects")}
-            className={`px-6 py-3 text-white rounded-full flex items-center mx-auto transform hover:scale-105 transition-all duration-300 ${
-              darkMode
-                ? "bg-indigo-700 hover:bg-indigo-800"
-                : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
-          >
-            View My Work
-            <ArrowDown className="ml-2" size={18} />
-          </button>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <ArrowDown className="text-white animate-bounce" size={24} />
-        </div>
-      </section>
-
+  <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+    <ArrowDown className="text-white animate-bounce" size={24} />
+  </div>
+</section>
       {/* About Me Section */}
       <section
         id="about-me"
@@ -258,7 +140,6 @@ const Portfolio = () => {
           </h2>
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            {/* Profile Image */}
             <div className="md:w-1/3 flex justify-center">
               <div
                 className={`rounded-full h-64 w-64 overflow-hidden border-4 shadow-xl transform hover:scale-105 transition-transform duration-300 ${
@@ -273,7 +154,6 @@ const Portfolio = () => {
               </div>
             </div>
 
-            {/* Bio */}
             <div className="md:w-2/3">
               <p
                 className={`text-lg mb-6 leading-relaxed ${
@@ -287,7 +167,6 @@ const Portfolio = () => {
                 experiences that are both beautiful and functional.
               </p>
 
-              {/* Skills */}
               <h3
                 className={`text-xl font-semibold mb-4 ${
                   darkMode ? "text-gray-200" : "text-gray-800"
@@ -330,167 +209,10 @@ const Portfolio = () => {
       </section>
 
       {/* Projects Section */}
-      <section
-        id="projects"
-        className={`py-20 ${darkMode ? "bg-gray-900" : "bg-gray-50"}`}
-      >
-        <div className="container mx-auto px-4">
-          <h2
-            className={`text-3xl font-bold text-center mb-12 ${
-              darkMode ? "text-gray-100" : "text-gray-800"
-            }`}
-          >
-            My Projects
-          </h2>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, i) => (
-              <div
-                key={i}
-                className={`rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ${
-                  darkMode ? "bg-gray-800" : "bg-white"
-                }`}
-              >
-                <div className="h-48 overflow-hidden">
-                  <img
-                    src={project.image}
-                    alt={`Project ${i + 1}`}
-                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3
-                    className={`text-xl font-semibold mb-2 ${
-                      darkMode ? "text-gray-200" : "text-gray-800"
-                    }`}
-                  >
-                    {project.title}
-                  </h3>
-                  <p
-                    className={`mb-4 ${
-                      darkMode ? "text-gray-400" : "text-gray-600"
-                    }`}
-                  >
-                    {project.description}
-                  </p>
-                  <div className="flex justify-between">
-                    <button
-                      className={`transition-colors ${
-                        darkMode
-                          ? "text-indigo-400 hover:text-indigo-300"
-                          : "text-indigo-600 hover:text-indigo-800"
-                      }`}
-                    >
-                      View Details
-                    </button>
-                    <a
-                      href={project.githubLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      onClick={() =>
-                        ReactGA.event({
-                          category: "Projects",
-                          action: "Clicked GitHub Link",
-                          label: project.title,
-                        })
-                      }
-                      className={`transition-colors ${
-                        darkMode
-                          ? "text-gray-400 hover:text-gray-300"
-                          : "text-gray-500 hover:text-gray-700"
-                      }`}
-                    >
-                      <Github size={20} />
-                    </a>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <Projects darkMode={darkMode} />
 
       {/* Contact Section */}
-      <section
-        id="contact"
-        className={`py-20 ${
-          darkMode ? "bg-indigo-950" : "bg-indigo-900"
-        } text-white`}
-      >
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Get In Touch</h2>
-
-          <div className="max-w-3xl mx-auto">
-            <div className="flex flex-col md:flex-row justify-center space-y-6 md:space-y-0 md:space-x-12">
-              <a
-                href="mailto:sharshit416@gmail.com"
-                className="flex items-center group"
-              >
-                <Mail
-                  className="mr-3 group-hover:text-indigo-300 transition-colors"
-                  size={24}
-                />
-                <span className="group-hover:text-indigo-300 transition-colors">
-                  sharshit416@gmail.com
-                </span>
-              </a>
-              <a
-                href="http://www.linkedin.com/in/apurv-s-023564269"
-                className="flex items-center group"
-              >
-                <Linkedin
-                  className="mr-3 group-hover:text-indigo-300 transition-colors"
-                  size={24}
-                />
-                <span className="group-hover:text-indigo-300 transition-colors">
-                  linkedin.com/in/apurv-s-023564269
-                </span>
-              </a>
-              <a
-                href="https://github.com/apurv212"
-                className="flex items-center group"
-              >
-                <Github
-                  className="mr-3 group-hover:text-indigo-300 transition-colors"
-                  size={24}
-                />
-                <span className="group-hover:text-indigo-300 transition-colors">
-                  github.com/apurv212
-                </span>
-              </a>
-            </div>
-
-            <div className="mt-12 text-center">
-              <p className="mb-6">
-                I'm always open to discussing new projects, opportunities or
-                partnerships.
-              </p>
-              <button
-                className={`px-8 py-3 rounded-full transition-colors duration-300 font-medium ${
-                  darkMode
-                    ? "bg-gray-200 text-indigo-950 hover:bg-white"
-                    : "bg-white text-indigo-900 hover:bg-gray-100"
-                }`}
-              >
-                <a
-                  href="/apurv_shashvat_resume25.pdf"
-                  download="apurv_shashvat.pdf"
-                  className="w-full h-full inline-block"
-                  onClick={() =>
-                    ReactGA.event({
-                      category: "Resume",
-                      action: "Downloaded Resume",
-                      label: "Resume Download",
-                    })
-                  }
-                >
-                  Download Resume
-                </a>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      <Contact darkMode={darkMode} />
 
       {/* Footer */}
       <footer
@@ -502,6 +224,21 @@ const Portfolio = () => {
           <p>© 2024 Apurv Shashvat. All rights reserved.</p>
         </div>
       </footer>
+
+      {/* Scroll to Top Button */}
+      {showScrollTop && (
+        <button
+          onClick={scrollToTop}
+          className={`fixed bottom-8 right-8 p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 ${
+            darkMode
+              ? "bg-indigo-600 text-white hover:bg-indigo-700"
+              : "bg-indigo-500 text-white hover:bg-indigo-600"
+          }`}
+          aria-label="Scroll to top"
+        >
+          <ArrowUp size={24} />
+        </button>
+      )}
     </div>
   );
 };
