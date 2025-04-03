@@ -11,7 +11,7 @@ const Navbar = ({
   toggleDarkMode,
   scrollToSection,
 }) => {
-  const navItems = ["Home", "About Me", "Projects", "Contact"];
+  const navItems = ["Home", "About Me", "Experience", "Projects", "Contact"]; // Added "Experience"
 
   return (
     <header
@@ -25,7 +25,6 @@ const Navbar = ({
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Logo/Name */}
           <div
             className={`text-xl font-bold ${
               darkMode ? "text-indigo-400" : "text-indigo-600"
@@ -34,7 +33,6 @@ const Navbar = ({
             <span className="transition-all duration-300">Apurv Shashvat</span>
           </div>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <button
@@ -57,7 +55,6 @@ const Navbar = ({
               </button>
             ))}
 
-            {/* Dark Mode Toggle */}
             <button
               onClick={toggleDarkMode}
               className={`p-2 rounded-full transition-colors ${
@@ -70,7 +67,6 @@ const Navbar = ({
             </button>
           </nav>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
             <button
               onClick={toggleDarkMode}
@@ -93,7 +89,6 @@ const Navbar = ({
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
       {isMenuOpen && (
         <div
           className={`md:hidden shadow-lg ${

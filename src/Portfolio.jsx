@@ -4,6 +4,7 @@ import ReactGA from "react-ga4";
 import Navbar from "./Navbar";
 import Contact from "./Contact";
 import Projects from "./Projectdetails";
+import Experience from "./Experience"; 
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 const TRACKING_ID = "G-H3XLBLJ77Y";
@@ -54,7 +55,6 @@ const Portfolio = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  // Text to animate
   const text = "Hello, I'm Apurv Shashvat";
 
   return (
@@ -73,56 +73,56 @@ const Portfolio = () => {
       />
 
       {/* Hero Section */}
-     
-<section
-  id="home"
-  className="h-screen relative flex items-center justify-center"
->
-  <div
-    className={`absolute inset-0 ${
-      darkMode ? "bg-gray-900" : "bg-gray-800"
-    } overflow-hidden`}
-  >
-    <div
-      className="absolute inset-0 bg-cover bg-center"
-      style={{
-        backgroundImage: "url('/api/placeholder/1600/900')",
-      }}
-    />
-  </div>
-
-  <div className="relative text-center px-4">
-    <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
-      {text.split("").map((char, index) => (
-        <span
-          key={index}
-          className="inline-block animate-type-repeat" // Updated class name
-          style={{ animationDelay: `${index * 0.1}s` }} // Staggered delay for each letter
+      <section
+        id="home"
+        className="h-screen relative flex items-center justify-center"
+      >
+        <div
+          className={`absolute inset-0 ${
+            darkMode ? "bg-gray-900" : "bg-gray-800"
+          } overflow-hidden`}
         >
-          {char === " " ? "\u00A0" : char}
-        </span>
-      ))}
-    </h1>
-    <p className="text-xl md:text-2xl text-gray-200 mb-8">
-      Full Stack Web Developer, Designer
-    </p>
-    <button
-      onClick={() => scrollToSection("projects")}
-      className={`px-6 py-3 text-white rounded-full flex items-center mx-auto transform hover:scale-105 transition-all duration-300 ${
-        darkMode
-          ? "bg-indigo-700 hover:bg-indigo-800"
-          : "bg-indigo-600 hover:bg-indigo-700"
-      }`}
-    >
-      View My Work
-      <ArrowDown className="ml-2" size={18} />
-    </button>
-  </div>
+          <div
+            className="absolute inset-0 bg-cover bg-center"
+            style={{
+              backgroundImage: "url('/api/placeholder/1600/900')",
+            }}
+          />
+        </div>
 
-  <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-    <ArrowDown className="text-white animate-bounce" size={24} />
-  </div>
-</section>
+        <div className="relative text-center px-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+            {text.split("").map((char, index) => (
+              <span
+                key={index}
+                className="inline-block animate-type-repeat"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </h1>
+          <p className="text-xl md:text-2xl text-gray-200 mb-8">
+            Full Stack Web Developer, Designer
+          </p>
+          <button
+            onClick={() => scrollToSection("projects")}
+            className={`px-6 py-3 text-white rounded-full flex items-center mx-auto transform hover:scale-105 transition-all duration-300 ${
+              darkMode
+                ? "bg-indigo-700 hover:bg-indigo-800"
+                : "bg-indigo-600 hover:bg-indigo-700"
+            }`}
+          >
+            View My Work
+            <ArrowDown className="ml-2" size={18} />
+          </button>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <ArrowDown className="text-white animate-bounce" size={24} />
+        </div>
+      </section>
+
       {/* About Me Section */}
       <section
         id="about-me"
@@ -183,7 +183,7 @@ const Portfolio = () => {
                   "React",
                   "Node.js",
                   "Git",
-                  "Express ja",
+                  "Express js",
                   "Java",
                   "Spring Boot",
                   "Rest API",
@@ -208,6 +208,9 @@ const Portfolio = () => {
         </div>
       </section>
 
+      {/* Experience Section */}
+      <Experience darkMode={darkMode} />
+
       {/* Projects Section */}
       <Projects darkMode={darkMode} />
 
@@ -221,7 +224,7 @@ const Portfolio = () => {
         }`}
       >
         <div className="container mx-auto">
-          <p>© 2024 Apurv Shashvat. All rights reserved.</p>
+          <p>© 2025 Apurv Shashvat - 7677672641</p>
         </div>
       </footer>
 

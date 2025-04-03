@@ -8,20 +8,20 @@ const Projects = ({ darkMode }) => {
       image: "/one_note.png",
       title: "One Note App",
       description:
-        "A library for vtu students in which they can calculate marks by books and prepared for placements.",
+        "Developed a centralized platform for all your learning notes.Consolidate and access notes from diverse external sources, providing a one-stop shop for students to access relevant learning materials.\nImplemented an SGPA calculator into the platform,.",
       githubLink: "https://github.com/apurv212",
     },
     {
       image: "/to_do.png",
       title: "Advance To-Do App",
-      description: "A advance to do list with authentication and lock notes functionality.",
+      description: "Developed a feature-rich to-do list application, offering CRUD operations, task pinning, and local storage for offline data retention.\nImplemented advanced functionalities like voice-to-text input, date/time-based note retrieval, note locking,sharing tasks, search functionality, and theme customization.",
       githubLink: "https://github.com/apurv212",
     },
     {
       image: "/spring_boot.png",
       title: "Spring Boot Application",
       description:
-        "A full-stack web application built with Spring Boot and React.",
+        "A full-stack web application built with Spring Boot and React and Swagger for Api documentation",
       githubLink: "https://github.com/apurv212",
     },
   ];
@@ -64,11 +64,16 @@ const Projects = ({ darkMode }) => {
                   {project.title}
                 </h3>
                 <p
-                  className={`mb-4 ${
+                  className= {`text-justify  mb-4 ${
                     darkMode ? "text-gray-400" : "text-gray-600"
                   }`}
                 >
-                  {project.description}
+                  {project.description.split("\n").map((line, i) => (
+    <React.Fragment key={i}>
+      {line}
+      <br />
+    </React.Fragment>
+  ))}
                 </p>
                 <div className="flex justify-between">
                   <button

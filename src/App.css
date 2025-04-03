@@ -1,4 +1,7 @@
 @import "tailwindcss";
+
+
+
 @keyframes typeRepeat {
     0% {
       opacity: 0;
@@ -9,10 +12,29 @@
       transform: translateY(0);
     }
     100% {
-      opacity: 1; /* Stay visible until reset */
+      opacity: 1; 
     }
   }
   
   .animate-type-repeat {
     animation: typeRepeat 9s ease-out infinite;
   }
+
+  
+
+@keyframes gradient {
+  0% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: -200% 50%;
+  }
+}
+
+
+@layer utilities {
+  .animate-in {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+}
