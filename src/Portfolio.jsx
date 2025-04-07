@@ -7,7 +7,8 @@ import Projects from "./Projectdetails";
 import Experience from "./Experience"; 
 import { ArrowDown, ArrowUp } from "lucide-react";
 
-const TRACKING_ID = "G-H3XLBLJ77Y";
+// Replace your single tracking ID with an array of IDs
+const TRACKING_ID = ["G-3GQBSQFLV6"];
 
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
