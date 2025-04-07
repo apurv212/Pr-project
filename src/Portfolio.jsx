@@ -148,7 +148,7 @@ const Portfolio = () => {
               >
                 <img
                   src="/apurv_college_coat.png"
-                  alt="Profile"
+                  alt="Apurv Shashvat - Web Developer"
                   className="w-full h-full object-cover"
                 />
               </div>

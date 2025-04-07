@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://apurv-shashvat.onrender.com/sitemap.xml
