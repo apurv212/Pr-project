@@ -225,7 +225,7 @@ const Portfolio = () => {
         }`}
       >
         <div className="container mx-auto">
-          <p>© 2025 Apurv Shashvat - 7677672641</p>
+          <p>© 2025 Apurv Shashvat - contact for personal website making 7677672641 and SEO boosting </p>
         </div>
       </footer>
 
