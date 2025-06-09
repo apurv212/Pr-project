@@ -5,6 +5,7 @@ import Navbar from "./Navbar";
 import Contact from "./Contact";
 import Projects from "./Projectdetails";
 import Experience from "./Experience"; 
+import MusicPlayer from "./MusicPlayer";
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 // Replace your single tracking ID with an array of IDs
@@ -220,13 +221,16 @@ const Portfolio = () => {
 
       {/* Footer */}
       <footer
-        className={`py-6 text-center ${
+        className={`py-6 text-center relative ${
           darkMode ? "bg-gray-950 text-gray-500" : "bg-gray-800 text-gray-400"
         }`}
       >
         <div className="container mx-auto">
           <p>© 2025 Apurv Shashvat - contact for personal website making 7677672641 and SEO boosting </p>
         </div>
+        
+        {/* Music Player - Only visible in footer */}
+        <MusicPlayer darkMode={darkMode} />
       </footer>
 
       {/* Scroll to Top Button */}
