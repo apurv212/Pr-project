@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
-import { compression } from 'vite-plugin-compression'
+import viteCompression from 'vite-plugin-compression'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -9,12 +9,12 @@ export default defineConfig({
     react(), 
     tailwindcss(),
     // Add gzip compression
-    compression({
+    viteCompression({
       algorithm: 'gzip',
       ext: '.gz',
     }),
     // Add brotli compression
-    compression({
+    viteCompression({
       algorithm: 'brotliCompress',
       ext: '.br',
     })

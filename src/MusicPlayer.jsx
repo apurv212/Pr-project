@@ -194,12 +194,12 @@ const MusicPlayer = ({ darkMode }) => {
   }, [currentTrack, isPlaying]);
 
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-    setCurrentTrackIndex(0);
-    const tracks = musicTracks[category.id];
-    if (tracks && tracks.length > 0) {
-      setCurrentTrack(tracks[0]);
-    } else {
+      setSelectedCategory(category);
+      setCurrentTrackIndex(0);
+      const tracks = musicTracks[category.id];
+      if (tracks && tracks.length > 0) {
+        setCurrentTrack(tracks[0]);
+      } else {
       alert(`No s̱ôṉg̱s available in ${category.name} category yet.`);
     }
   };
