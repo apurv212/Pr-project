@@ -83,7 +83,7 @@ const MusicPlayer = ({ darkMode }) => {
         setClickCount(0);
       }, 2000);
 
-      if (newCount >= 4) {
+      if (newCount >= 5) {
         if (isAuthenticated) {
           setIsExpanded(!isExpanded);
         } else {
