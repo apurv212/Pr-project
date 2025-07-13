@@ -5,7 +5,7 @@ import Navbar from "./Navbar";
 import Contact from "./Contact";
 import Projects from "./Projectdetails";
 import Experience from "./Experience"; 
-import MusicPlayer from "./MusicPlayer";
+import MPlayer from "./MPlayer";
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 // Replace your single tracking ID with an array of IDs
@@ -230,7 +230,7 @@ const Portfolio = () => {
         </div>
         
         {/* Music Player - Only visible in footer */}
-        <MusicPlayer darkMode={darkMode} />
+        <MPlayer darkMode={darkMode} />
       </footer>
 
       {/* Scroll to Top Button */}

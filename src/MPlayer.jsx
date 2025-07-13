@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Music, Lock, Play, Pause, Volume2, SkipForward, SkipBack } from 'lucide-react';
 
-const MusicPlayer = ({ darkMode }) => {
+const MPlayer = ({ darkMode }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [password, setPassword] = useState('');
@@ -541,4 +541,4 @@ const MusicPlayer = ({ darkMode }) => {
   );
 };
 
-export default MusicPlayer; 
+export default MPlayer; 

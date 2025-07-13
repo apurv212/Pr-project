@@ -4,9 +4,9 @@ const Experience = ({ darkMode }) => {
   const experiences = [
     {
       year: "March 2025 - Present",
-      title: "Freelancing Doctor's project",
+      title: "Keywords Studio",
       type: "work",
-      description: "Making an application for doctors",
+      description: "Research associate Engineer",
     },
     {
       year: "May 2024 - Feb 2025",
