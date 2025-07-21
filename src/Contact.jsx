@@ -1,22 +1,175 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Github, Linkedin, Mail, MessageCircle, ExternalLink, CheckCircle, Send } from "lucide-react";
+import { Github, Linkedin, Mail, MessageCircle, ExternalLink, CheckCircle, Send, Upload, X, Paperclip, Image as ImageIcon } from "lucide-react";
 import ReactGA from "react-ga4";
 
 const Contact = ({ darkMode }) => {
   const contactRef = useRef(null);
+  const fileInputRef = useRef(null);
+  const dropZoneRef = useRef(null);
   const [result, setResult] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [selectedFiles, setSelectedFiles] = useState([]);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [fileError, setFileError] = useState("");
+
+  // File upload configuration
+  const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_FILES = 3;
+  const ALLOWED_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'application/pdf', 'text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+
+  const validateFile = (file) => {
+    if (file.size > MAX_FILE_SIZE) {
+      return `File "${file.name}" is too large. Maximum size is 5MB.`;
+    }
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      return `File "${file.name}" type is not supported. Allowed: images, PDF, DOC, TXT.`;
+    }
+    return null;
+  };
+
+  const handleFiles = (files) => {
+    const fileArray = Array.from(files);
+    
+    if (selectedFiles.length + fileArray.length > MAX_FILES) {
+      setFileError(`Maximum ${MAX_FILES} files allowed. Please remove some files first.`);
+      return;
+    }
+
+    const validFiles = [];
+    let hasError = false;
+
+    for (const file of fileArray) {
+      // Check for duplicates
+      if (selectedFiles.some(f => f.name === file.name && f.size === file.size)) {
+        setFileError(`File "${file.name}" is already selected.`);
+        hasError = true;
+        break;
+      }
+
+      const error = validateFile(file);
+      if (error) {
+        setFileError(error);
+        hasError = true;
+        break;
+      }
+
+      validFiles.push(file);
+    }
+
+    if (!hasError) {
+      setSelectedFiles(prev => [...prev, ...validFiles]);
+      setFileError("");
+    }
+  };
+
+  const removeFile = (index) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    setFileError("");
+  };
+
+  const handleFileInput = (event) => {
+    if (event.target.files.length > 0) {
+      handleFiles(event.target.files);
+    }
+  };
+
+  // Drag and Drop handlers
+  const handleDragEnter = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!dropZoneRef.current?.contains(e.relatedTarget)) {
+      setIsDragOver(false);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragOver(false);
+
+    const files = e.dataTransfer.files;
+    if (files.length > 0) {
+      handleFiles(files);
+    }
+  };
+
+  // Clipboard paste handler
+  const handlePaste = (e) => {
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    const files = [];
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.kind === 'file') {
+        const file = item.getAsFile();
+        if (file) files.push(file);
+      }
+    }
+
+    if (files.length > 0) {
+      handleFiles(files);
+      e.preventDefault(); // Prevent default paste behavior
+    }
+  };
+
+  // Add paste event listener
+  useEffect(() => {
+    const handleDocumentPaste = (e) => {
+      // Only handle paste if the contact form is visible/active
+      if (contactRef.current?.contains(document.activeElement)) {
+        handlePaste(e);
+      }
+    };
+
+    document.addEventListener('paste', handleDocumentPaste);
+    return () => document.removeEventListener('paste', handleDocumentPaste);
+  }, [selectedFiles]);
+
+  const getFileIcon = (file) => {
+    if (file.type.startsWith('image/')) {
+      return <ImageIcon size={16} className="text-blue-400" />;
+    }
+    return <Paperclip size={16} className="text-gray-400" />;
+  };
+
+  const formatFileSize = (bytes) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
 
   const onSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
     setResult("Sending....");
+    
     const formData = new FormData(event.target);
 
+    // Add access key for Web3Forms (current provider)
     formData.append("access_key", "ffa2a120-c980-40b6-9b96-7733cc9724e7");
 
+    // Add files to form data
+    selectedFiles.forEach((file, index) => {
+      formData.append(`attachment_${index}`, file);
+    });
+
     try {
+      // Using Web3Forms (Note: File uploads require Pro plan)
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formData
@@ -27,13 +180,14 @@ const Contact = ({ darkMode }) => {
       if (data.success) {
         setResult("Form Submitted Successfully");
         setIsSuccess(true);
+        setSelectedFiles([]); // Clear files
         event.target.reset();
         
         // Track form submission
         ReactGA.event({
           category: "Contact",
           action: "Form Submitted",
-          label: "Contact Form",
+          label: "Contact Form with Files",
         });
         
         // Reset success state after 5 seconds
@@ -43,6 +197,103 @@ const Contact = ({ darkMode }) => {
         }, 5000);
       } else {
         console.log("Error", data);
+        setResult(data.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setResult("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Alternative: FormSubmit (completely free with file support)
+  const onSubmitWithFormSubmit = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setResult("Sending....");
+    
+    const formData = new FormData(event.target);
+    
+    // Add files to form data with unique names for FormSubmit multiple file support
+    selectedFiles.forEach((file, index) => {
+      formData.append(`attachment_${index + 1}`, file); // FormSubmit supports multiple attachments with unique names
+    });
+
+    try {
+      // Using FormSubmit with the provided hash for security
+      const response = await fetch("https://formsubmit.co/48f747f6191aa0bd541d060966a57236", {
+        method: "POST",
+        body: formData
+      });
+
+      if (response.ok) {
+        setResult("Form Submitted Successfully");
+        setIsSuccess(true);
+        setSelectedFiles([]); // Clear files
+        event.target.reset();
+        
+        // Track form submission
+        ReactGA.event({
+          category: "Contact",
+          action: "Form Submitted",
+          label: "Contact Form with Files (FormSubmit)",
+        });
+        
+        // Reset success state after 5 seconds
+        setTimeout(() => {
+          setIsSuccess(false);
+          setResult("");
+        }, 5000);
+      } else {
+        setResult("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setResult("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Alternative: Web3Forms Pro (if you upgrade) - Guaranteed multiple file support
+  const onSubmitWithWeb3FormsPro = async (event) => {
+    event.preventDefault();
+    setIsSubmitting(true);
+    setResult("Sending....");
+    
+    const formData = new FormData(event.target);
+    formData.append("access_key", "ffa2a120-c980-40b6-9b96-7733cc9724e7");
+
+    // Web3Forms Pro supports multiple files with same or different names
+    selectedFiles.forEach((file, index) => {
+      formData.append(`attachment_${index}`, file);
+    });
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        setResult("Form Submitted Successfully");
+        setIsSuccess(true);
+        setSelectedFiles([]);
+        event.target.reset();
+        
+        ReactGA.event({
+          category: "Contact",
+          action: "Form Submitted", 
+          label: "Contact Form with Files (Web3Forms Pro)",
+        });
+        
+        setTimeout(() => {
+          setIsSuccess(false);
+          setResult("");
+        }, 5000);
+      } else {
         setResult(data.message || "Something went wrong. Please try again.");
       }
     } catch (error) {
@@ -109,7 +360,12 @@ const Contact = ({ darkMode }) => {
               </div>
             )}
             
-            <form onSubmit={onSubmit} className="space-y-6">
+            <form onSubmit={onSubmitWithFormSubmit} className="space-y-6" encType="multipart/form-data">
+              {/* FormSubmit Configuration Fields */}
+              <input type="hidden" name="_subject" value="New Portfolio Contact Form Submission" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_captcha" value="false" />
+              
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
@@ -187,6 +443,93 @@ const Contact = ({ darkMode }) => {
                   disabled={isSubmitting}
                 ></textarea>
               </div>
+
+              {/* File Upload Section */}
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  Attachments (Optional)
+                </label>
+                <div
+                  ref={dropZoneRef}
+                  className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-300 ${
+                    isDragOver
+                      ? darkMode
+                        ? "border-indigo-400 bg-indigo-800/30"
+                        : "border-indigo-300 bg-indigo-700/30"
+                      : darkMode
+                      ? "border-indigo-600 bg-indigo-800/20"
+                      : "border-indigo-500 bg-indigo-700/20"
+                  } hover:border-indigo-400 cursor-pointer`}
+                  onDragEnter={handleDragEnter}
+                  onDragLeave={handleDragLeave}
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept=".jpg,.jpeg,.png,.gif,.pdf,.txt,.doc,.docx"
+                    onChange={handleFileInput}
+                    className="hidden"
+                    disabled={isSubmitting}
+                  />
+                  
+                  <Upload className="mx-auto mb-3 text-indigo-300" size={32} />
+                  <p className="text-sm text-indigo-200 mb-2">
+                    {isDragOver ? "Drop files here" : "Drag & drop files here, or click to browse"}
+                  </p>
+                  <p className="text-xs text-indigo-300">
+                    Or paste from clipboard (Ctrl+V) • Max {MAX_FILES} files, 5MB each
+                  </p>
+                  <p className="text-xs text-indigo-400 mt-1">
+                    Supports: Images, PDF, DOC, TXT
+                  </p>
+                </div>
+
+                {/* File Error */}
+                {fileError && (
+                  <div className="mt-2 p-2 bg-red-500/20 border border-red-500/50 rounded text-red-400 text-sm">
+                    {fileError}
+                  </div>
+                )}
+
+                {/* Selected Files List */}
+                {selectedFiles.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <p className="text-sm font-medium text-indigo-200">Selected files:</p>
+                    {selectedFiles.map((file, index) => (
+                      <div
+                        key={index}
+                        className={`flex items-center justify-between p-3 rounded-lg ${
+                          darkMode ? "bg-indigo-800/30" : "bg-indigo-700/30"
+                        } border border-indigo-600/50`}
+                      >
+                        <div className="flex items-center space-x-3">
+                          {getFileIcon(file)}
+                          <div>
+                            <p className="text-sm font-medium text-white truncate max-w-[200px]">
+                              {file.name}
+                            </p>
+                            <p className="text-xs text-indigo-300">
+                              {formatFileSize(file.size)}
+                            </p>
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(index)}
+                          className="p-1 hover:bg-red-500/20 rounded-full transition-colors duration-200"
+                          disabled={isSubmitting}
+                        >
+                          <X size={16} className="text-red-400 hover:text-red-300" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
               
               <button
                 type="submit"
@@ -208,6 +551,11 @@ const Contact = ({ darkMode }) => {
                   <>
                     <Send size={18} className="mr-2" />
                     Send Message
+                    {selectedFiles.length > 0 && (
+                      <span className="ml-2 px-2 py-1 bg-white/20 rounded-full text-xs">
+                        +{selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''}
+                      </span>
+                    )}
                   </>
                 )}
               </button>
