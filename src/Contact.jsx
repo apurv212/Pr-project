@@ -334,24 +334,24 @@ const Contact = ({ darkMode }) => {
     <section
       id="contact"
       ref={contactRef}
-      className={`py-20 ${
-        darkMode ? "bg-indigo-950" : "bg-indigo-900"
-      } text-white relative overflow-hidden`}
+      className="py-20 text-white relative overflow-hidden ai-section-bg"
     >
-      {/* Animated background elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-        <div className={`absolute w-40 h-40 rounded-full ${darkMode ? "bg-indigo-800" : "bg-indigo-700"} opacity-20 top-10 left-10 animate-float-slow`}></div>
-        <div className={`absolute w-64 h-64 rounded-full ${darkMode ? "bg-indigo-700" : "bg-indigo-600"} opacity-10 bottom-20 right-20 animate-float`}></div>
-        <div className={`absolute w-20 h-20 rounded-full ${darkMode ? "bg-purple-700" : "bg-purple-600"} opacity-20 top-40 right-40 animate-float-medium`}></div>
+      {/* AI theme background: grid + glow + soft orbs */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
+        <div className="ai-grid" aria-hidden="true" />
+        <div className="ai-glow" aria-hidden="true" />
+        <div className="absolute w-40 h-40 rounded-full bg-cyan-500/15 top-10 left-10 animate-float-slow blur-2xl"></div>
+        <div className="absolute w-64 h-64 rounded-full bg-blue-500/10 bottom-20 right-20 animate-float blur-3xl"></div>
+        <div className="absolute w-24 h-24 rounded-full bg-cyan-400/10 top-40 right-40 animate-float-medium blur-xl"></div>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
-        <h2 className="text-3xl font-bold text-center mb-12 animate-item opacity-0 transition-all duration-700 transform translate-y-8">Get In Touch</h2>
+      <div className="container mx-auto px-4 relative z-10 max-w-full">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12 animate-item opacity-0 transition-all duration-700 transform translate-y-8">Get In Touch</h2>
         
         {/* Contact Form */}
-        <div className="max-w-2xl mx-auto mb-16">
-          <div className={`${darkMode ? "bg-indigo-900/50" : "bg-indigo-800/50"} backdrop-blur-sm rounded-2xl p-8 shadow-2xl border ${darkMode ? "border-indigo-700/50" : "border-indigo-600/50"} animate-item opacity-0 transition-all duration-700 transform translate-y-8`}>
-            <h3 className="text-2xl font-semibold mb-6 text-center">Send me a message</h3>
+        <div className="max-w-2xl mx-auto mb-12 sm:mb-16 w-full">
+          <div className={`${darkMode ? "bg-slate-900/70" : "bg-slate-800/70"} backdrop-blur-sm rounded-2xl p-4 sm:p-8 shadow-2xl border ${darkMode ? "border-cyan-500/25" : "border-cyan-500/25"} animate-item opacity-0 transition-all duration-700 transform translate-y-8`}>
+            <h3 className="text-xl sm:text-2xl font-semibold mb-6 text-center">Send me a message</h3>
             
             {isSuccess && (
               <div className="mb-6 p-4 bg-green-500/20 border border-green-500/50 rounded-lg flex items-center justify-center animate-pulse">
@@ -366,7 +366,7 @@ const Contact = ({ darkMode }) => {
               <input type="hidden" name="_template" value="table" />
               <input type="hidden" name="_captcha" value="false" />
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium mb-2">
                     Name *
@@ -378,9 +378,9 @@ const Contact = ({ darkMode }) => {
                     required
                     className={`w-full px-4 py-3 rounded-lg ${
                       darkMode 
-                        ? "bg-indigo-800/50 border-indigo-600 focus:border-indigo-400" 
-                        : "bg-indigo-700/50 border-indigo-500 focus:border-indigo-300"
-                    } border-2 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-300 text-white placeholder-gray-300`}
+                        ? "bg-slate-800/70 border-cyan-500/30 focus:border-cyan-400" 
+                        : "bg-slate-800/60 border-cyan-500/25 focus:border-cyan-300"
+                    } border-2 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 transition-all duration-300 text-white placeholder-gray-300`}
                     placeholder="Your name"
                     disabled={isSubmitting}
                   />
@@ -397,32 +397,32 @@ const Contact = ({ darkMode }) => {
                     required
                     className={`w-full px-4 py-3 rounded-lg ${
                       darkMode 
-                        ? "bg-indigo-800/50 border-indigo-600 focus:border-indigo-400" 
-                        : "bg-indigo-700/50 border-indigo-500 focus:border-indigo-300"
-                    } border-2 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-300 text-white placeholder-gray-300`}
+                        ? "bg-slate-800/70 border-cyan-500/30 focus:border-cyan-400" 
+                        : "bg-slate-800/60 border-cyan-500/25 focus:border-cyan-300"
+                    } border-2 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 transition-all duration-300 text-white placeholder-gray-300`}
                     placeholder="Your phone number"
                     disabled={isSubmitting}
                   />
                 </div>
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-2">
-                  Email *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className={`w-full px-4 py-3 rounded-lg ${
-                    darkMode 
-                      ? "bg-indigo-800/50 border-indigo-600 focus:border-indigo-400" 
-                      : "bg-indigo-700/50 border-indigo-500 focus:border-indigo-300"
-                  } border-2 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-300 text-white placeholder-gray-300`}
-                  placeholder="your.email@example.com"
-                  disabled={isSubmitting}
-                />
+
+                <div className="col-span-2 md:col-span-1">
+                  <label htmlFor="email" className="block text-sm font-medium mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    required
+                    className={`w-full px-4 py-3 rounded-lg ${
+                      darkMode 
+                        ? "bg-slate-800/70 border-cyan-500/30 focus:border-cyan-400" 
+                        : "bg-slate-800/60 border-cyan-500/25 focus:border-cyan-300"
+                    } border-2 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 transition-all duration-300 text-white placeholder-gray-300`}
+                    placeholder="your.email@.com"
+                    disabled={isSubmitting}
+                  />
+                </div>
               </div>
               
               <div>
@@ -433,12 +433,12 @@ const Contact = ({ darkMode }) => {
                   id="message"
                   name="message"
                   required
-                  rows={6}
+                  rows={2}
                   className={`w-full px-4 py-3 rounded-lg ${
                     darkMode 
-                      ? "bg-indigo-800/50 border-indigo-600 focus:border-indigo-400" 
-                      : "bg-indigo-700/50 border-indigo-500 focus:border-indigo-300"
-                  } border-2 focus:outline-none focus:ring-2 focus:ring-indigo-400/50 transition-all duration-300 text-white placeholder-gray-300 resize-none`}
+                      ? "bg-slate-800/70 border-cyan-500/30 focus:border-cyan-400" 
+                      : "bg-slate-800/60 border-cyan-500/25 focus:border-cyan-300"
+                  } border-2 focus:outline-none focus:ring-2 focus:ring-cyan-400/40 transition-all duration-300 text-white placeholder-gray-300 resize-none`}
                   placeholder="Your message here..."
                   disabled={isSubmitting}
                 ></textarea>
@@ -454,12 +454,12 @@ const Contact = ({ darkMode }) => {
                   className={`relative border-2 border-dashed rounded-lg p-6 text-center transition-all duration-300 ${
                     isDragOver
                       ? darkMode
-                        ? "border-indigo-400 bg-indigo-800/30"
-                        : "border-indigo-300 bg-indigo-700/30"
+                        ? "border-cyan-400 bg-cyan-500/10"
+                        : "border-cyan-300 bg-cyan-500/10"
                       : darkMode
-                      ? "border-indigo-600 bg-indigo-800/20"
-                      : "border-indigo-500 bg-indigo-700/20"
-                  } hover:border-indigo-400 cursor-pointer`}
+                      ? "border-cyan-500/40 bg-slate-900/40"
+                      : "border-cyan-500/30 bg-slate-800/40"
+                  } hover:border-cyan-400 cursor-pointer`}
                   onDragEnter={handleDragEnter}
                   onDragLeave={handleDragLeave}
                   onDragOver={handleDragOver}
@@ -476,14 +476,14 @@ const Contact = ({ darkMode }) => {
                     disabled={isSubmitting}
                   />
                   
-                  <Upload className="mx-auto mb-3 text-indigo-300" size={32} />
-                  <p className="text-sm text-indigo-200 mb-2">
+                  <Upload className="mx-auto mb-3 text-cyan-300" size={32} />
+                  <p className="text-sm text-cyan-200 mb-2">
                     {isDragOver ? "Drop files here" : "Drag & drop files here, or click to browse"}
                   </p>
-                  <p className="text-xs text-indigo-300">
+                  <p className="text-xs text-cyan-300">
                     Or paste from clipboard (Ctrl+V) • Max {MAX_FILES} files, 5MB each
                   </p>
-                  <p className="text-xs text-indigo-400 mt-1">
+                  <p className="text-xs text-cyan-400 mt-1">
                     Supports: Images, PDF, DOC, TXT
                   </p>
                 </div>
@@ -498,21 +498,21 @@ const Contact = ({ darkMode }) => {
                 {/* Selected Files List */}
                 {selectedFiles.length > 0 && (
                   <div className="mt-4 space-y-2">
-                    <p className="text-sm font-medium text-indigo-200">Selected files:</p>
+                    <p className="text-sm font-medium text-cyan-200">Selected files:</p>
                     {selectedFiles.map((file, index) => (
                       <div
                         key={index}
                         className={`flex items-center justify-between p-3 rounded-lg ${
-                          darkMode ? "bg-indigo-800/30" : "bg-indigo-700/30"
-                        } border border-indigo-600/50`}
+                          darkMode ? "bg-slate-800/50" : "bg-slate-700/50"
+                        } border border-cyan-500/25`}
                       >
                         <div className="flex items-center space-x-3">
                           {getFileIcon(file)}
                           <div>
-                            <p className="text-sm font-medium text-white truncate max-w-[200px]">
+                            <p className="text-sm font-medium text-white truncate max-w-[140px] sm:max-w-[200px]">
                               {file.name}
                             </p>
-                            <p className="text-xs text-indigo-300">
+                            <p className="text-xs text-cyan-300">
                               {formatFileSize(file.size)}
                             </p>
                           </div>
@@ -538,8 +538,8 @@ const Contact = ({ darkMode }) => {
                   isSubmitting
                     ? "bg-gray-600 cursor-not-allowed"
                     : darkMode
-                    ? "bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 hover:scale-105"
-                    : "bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 hover:scale-105"
+                    ? "ai-cta hover:scale-105"
+                    : "ai-cta hover:scale-105"
                 } text-white shadow-lg hover:shadow-xl`}
               >
                 {isSubmitting ? (
@@ -574,11 +574,11 @@ const Contact = ({ darkMode }) => {
         </div>
         
         {/* Social Links */}
-        <div className="max-w-3xl mx-auto">
-          <div className="flex flex-wrap justify-center gap-y-8 gap-x-12">
+        <div className="max-w-3xl mx-auto w-full">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center items-start sm:items-center gap-4 sm:gap-y-8 sm:gap-x-12 w-fit mx-auto">
             <a
               href="mailto:sharshit416@gmail.com"
-              className="flex items-center group animate-item opacity-0 transition-all duration-500 transform translate-y-6"
+              className="flex items-center group animate-item opacity-0 transition-all duration-500 transform translate-y-6 max-w-full"
               onClick={() =>
                 ReactGA.event({
                   category: "Contact",
@@ -587,10 +587,10 @@ const Contact = ({ darkMode }) => {
                 })
               }
             >
-              <div className={`p-3 rounded-full mr-3 ${darkMode ? "bg-indigo-800" : "bg-indigo-700"} group-hover:scale-110 transition-all duration-300`}>
-                <Mail className="group-hover:text-indigo-300 transition-colors" size={20} />
+              <div className={`p-3 rounded-full mr-3 shrink-0 ${darkMode ? "bg-slate-800" : "bg-slate-700"} group-hover:scale-110 transition-all duration-300`}>
+                <Mail className="group-hover:text-cyan-300 transition-colors" size={20} />
               </div>
-              <span className="group-hover:text-indigo-300 transition-colors">
+              <span className="group-hover:text-cyan-300 transition-colors break-all text-sm sm:text-base">
                 sharshit416@gmail.com
               </span>
             </a>
@@ -608,10 +608,10 @@ const Contact = ({ darkMode }) => {
                 })
               }
             >
-              <div className={`p-3 rounded-full mr-3 ${darkMode ? "bg-indigo-800" : "bg-indigo-700"} group-hover:scale-110 transition-all duration-300`}>
-                <Linkedin className="group-hover:text-indigo-300 transition-colors" size={20} />
+              <div className={`p-3 rounded-full mr-3 shrink-0 ${darkMode ? "bg-slate-800" : "bg-slate-700"} group-hover:scale-110 transition-all duration-300`}>
+                <Linkedin className="group-hover:text-cyan-300 transition-colors" size={20} />
               </div>
-              <span className="group-hover:text-indigo-300 transition-colors">
+              <span className="group-hover:text-cyan-300 transition-colors">
                 LinkedIn
               </span>
             </a>
@@ -629,10 +629,10 @@ const Contact = ({ darkMode }) => {
                 })
               }
             >
-              <div className={`p-3 rounded-full mr-3 ${darkMode ? "bg-indigo-800" : "bg-indigo-700"} group-hover:scale-110 transition-all duration-300`}>
-                <Github className="group-hover:text-indigo-300 transition-colors" size={20} />
+              <div className={`p-3 rounded-full mr-3 shrink-0 ${darkMode ? "bg-slate-800" : "bg-slate-700"} group-hover:scale-110 transition-all duration-300`}>
+                <Github className="group-hover:text-cyan-300 transition-colors" size={20} />
               </div>
-              <span className="group-hover:text-indigo-300 transition-colors">
+              <span className="group-hover:text-cyan-300 transition-colors">
                 GitHub
               </span>
             </a>
@@ -650,27 +650,27 @@ const Contact = ({ darkMode }) => {
                 })
               }
             >
-              <div className={`p-3 rounded-full mr-3 ${darkMode ? "bg-indigo-800" : "bg-indigo-700"} group-hover:scale-110 transition-all duration-300`}>
-                <MessageCircle className="group-hover:text-indigo-300 transition-colors" size={20} />
+              <div className={`p-3 rounded-full mr-3 shrink-0 ${darkMode ? "bg-slate-800" : "bg-slate-700"} group-hover:scale-110 transition-all duration-300`}>
+                <MessageCircle className="group-hover:text-cyan-300 transition-colors" size={20} />
               </div>
-              <span className="group-hover:text-indigo-300 transition-colors">
+              <span className="group-hover:text-cyan-300 transition-colors">
                 WhatsApp
               </span>
             </a>
           </div>
           
-          <div className="mt-16 text-center">
-            <p className="mb-8 animate-item opacity-0 transition-all duration-500 transform translate-y-6 max-w-lg mx-auto">
+          <div className="mt-12 sm:mt-16 text-center px-2">
+            <p className="mb-8 animate-item opacity-0 transition-all duration-500 transform translate-y-6 max-w-lg mx-auto text-sm sm:text-base">
               I'm always open to discussing new projects, opportunities or
               partnerships.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center animate-item opacity-0 transition-all duration-500 transform translate-y-6">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-stretch sm:items-center animate-item opacity-0 transition-all duration-500 transform translate-y-6 w-full max-w-md sm:max-w-none mx-auto">
               <button
-                className={`px-8 py-3 rounded-full transition-all duration-300 font-medium hover:scale-105 shadow-lg ${
+                className={`w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full transition-all duration-300 font-medium hover:scale-105 shadow-lg ${
                   darkMode
-                    ? "bg-gray-200 text-indigo-950 hover:bg-white"
-                    : "bg-white text-indigo-900 hover:bg-gray-100"
+                    ? "bg-gray-200 text-slate-950 hover:bg-white"
+                    : "bg-white text-slate-900 hover:bg-gray-100"
                 }`}
               >
                 <a
@@ -693,10 +693,10 @@ const Contact = ({ darkMode }) => {
                 href="https://linktr.ee/apurv_shashvat"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`px-8 py-3 rounded-full transition-all duration-300 font-medium hover:scale-105 shadow-lg flex items-center justify-center ${
+                className={`w-full sm:w-auto px-6 sm:px-8 py-3 rounded-full transition-all duration-300 font-medium hover:scale-105 shadow-lg flex items-center justify-center ${
                   darkMode
-                    ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700"
-                    : "bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:from-purple-600 hover:to-indigo-600"
+                    ? "ai-cta text-white"
+                    : "ai-cta text-white"
                 }`}
                 onClick={() =>
                   ReactGA.event({

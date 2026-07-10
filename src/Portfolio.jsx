@@ -16,6 +16,7 @@ const Portfolio = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     ReactGA.initialize(TRACKING_ID);
@@ -25,12 +26,25 @@ const Portfolio = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress =
+        docHeight > 0
+          ? Math.min(100, Math.max(0, (scrollPosition / docHeight) * 100))
+          : 0;
+
       setIsScrolled(scrollPosition > 10);
-      setShowScrollTop(scrollPosition > 300);
+      setShowScrollTop(scrollPosition > 200);
+      setScrollProgress(progress);
     };
 
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -61,7 +75,7 @@ const Portfolio = () => {
 
   return (
     <div
-      className={`min-h-screen font-sans ${
+      className={`min-h-screen font-sans overflow-x-hidden w-full max-w-[100vw] ${
         darkMode ? "dark bg-gray-900" : "bg-gray-50"
       }`}
     >
@@ -80,20 +94,16 @@ const Portfolio = () => {
         className="h-screen relative flex items-center justify-center"
       >
         <div
-          className={`absolute inset-0 ${
-            darkMode ? "bg-gray-900" : "bg-gray-800"
-          } overflow-hidden`}
+          className={`absolute inset-0 overflow-hidden ${
+            darkMode ? "hero-bg hero-bg--dark" : "hero-bg hero-bg--light"
+          }`}
         >
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/api/placeholder/1600/900')",
-            }}
-          />
+          <div className="hero-grid" aria-hidden="true" />
+          <div className="hero-glow" aria-hidden="true" />
         </div>
 
-        <div className="relative text-center px-4">
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+        <div className="relative text-center px-4 max-w-full">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 break-words">
             {text.split("").map((char, index) => (
               <span
                 key={index}
@@ -104,16 +114,12 @@ const Portfolio = () => {
               </span>
             ))}
           </h1>
-          <p className="text-xl md:text-2xl text-gray-200 mb-8">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 px-2">
             Full Stack Web Developer, Designer
           </p>
           <button
             onClick={() => scrollToSection("projects")}
-            className={`px-6 py-3 text-white rounded-full flex items-center mx-auto transform hover:scale-105 transition-all duration-300 ${
-              darkMode
-                ? "bg-indigo-700 hover:bg-indigo-800"
-                : "bg-indigo-600 hover:bg-indigo-700"
-            }`}
+            className="ai-cta px-6 py-3 text-white rounded-full flex items-center mx-auto transform hover:scale-105 transition-all duration-300"
           >
             View My Work
             <ArrowDown className="ml-2" size={18} />
@@ -142,10 +148,10 @@ const Portfolio = () => {
           </h2>
 
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="md:w-1/3 flex justify-center">
+            <div className="md:w-1/3 flex justify-center w-full">
               <div
-                className={`rounded-full h-64 w-64 overflow-hidden border-4 shadow-xl transform hover:scale-105 transition-transform duration-300 ${
-                  darkMode ? "border-indigo-400" : "border-indigo-500"
+                className={`rounded-full h-48 w-48 sm:h-64 sm:w-64 overflow-hidden border-4 shadow-xl transform hover:scale-105 transition-transform duration-300 ${
+                  darkMode ? "border-cyan-400" : "border-cyan-500"
                 }`}
               >
                 <img
@@ -180,25 +186,30 @@ const Portfolio = () => {
                 {[
                   "HTML5",
                   "CSS3",
-                  "Tailwing CSS",
+                  "Tailwind CSS",
                   "JavaScript",
+                  "TypeScript",
                   "React",
-                  "Node.js",
-                  "Git",
-                  "Express js",
+                  "Next.js",
+                  "Vue.js",
+                  "Python",
+                  "Django",
+                  "FastAPI",
+                  "PostgreSQL",
+                  "Docker",
+                  "AWS",
+                  "Google ADK",
                   "Java",
-                  "Spring Boot",
                   "Rest API",
-                  "Hibernate",
-                  "J2EE",
+                  "Git",
                   "Postman",
                 ].map((skill) => (
                   <div
                     key={skill}
                     className={`rounded-lg py-2 px-4 text-center transition-colors duration-300 ${
                       darkMode
-                        ? "bg-gray-700 text-gray-300 hover:bg-indigo-900 hover:text-indigo-300"
-                        : "bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:text-indigo-600"
+                        ? "bg-gray-700 text-gray-300 hover:bg-cyan-950 hover:text-cyan-300"
+                        : "bg-gray-100 text-gray-700 hover:bg-cyan-100 hover:text-cyan-600"
                     }`}
                   >
                     {skill}
@@ -221,30 +232,46 @@ const Portfolio = () => {
 
       {/* Footer */}
       <footer
-        className={`py-6 text-center relative ${
+        className={`py-6 text-center relative overflow-x-hidden ${
           darkMode ? "bg-gray-950 text-gray-500" : "bg-gray-800 text-gray-400"
         }`}
       >
-        <div className="container mx-auto">
-          <p>© 2025 Apurv Shashvat - contact for personal website making 7677672641 and SEO boosting </p>
+        <div className="container mx-auto px-4">
+          <p className="text-sm sm:text-base break-words">
+            © 2025 Apurv Shashvat - contact for personal website making 7677672641 and SEO boosting
+          </p>
         </div>
         
         {/* Music Player - Only visible in footer */}
         <MPlayer darkMode={darkMode} />
       </footer>
 
-      {/* Scroll to Top Button */}
+      {/* Scroll progress + back to top */}
       {showScrollTop && (
         <button
           onClick={scrollToTop}
-          className={`fixed bottom-8 right-8 p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 ${
-            darkMode
-              ? "bg-indigo-600 text-white hover:bg-indigo-700"
-              : "bg-indigo-500 text-white hover:bg-indigo-600"
-          }`}
+          className="scroll-progress-btn fixed bottom-6 right-4 sm:bottom-8 sm:right-8 z-40 group"
           aria-label="Scroll to top"
         >
-          <ArrowUp size={24} />
+          <svg className="scroll-progress-ring" viewBox="0 0 56 56" aria-hidden="true">
+            <circle className="scroll-progress-track" cx="28" cy="28" r="24" />
+            <circle
+              className="scroll-progress-bar"
+              cx="28"
+              cy="28"
+              r="24"
+              style={{
+                strokeDasharray: 150.8,
+                strokeDashoffset: 150.8 - (150.8 * scrollProgress) / 100,
+              }}
+            />
+          </svg>
+          <ArrowUp
+            size={20}
+            className={`scroll-progress-icon ${
+              darkMode ? "text-cyan-400" : "text-cyan-600"
+            }`}
+          />
         </button>
       )}
     </div>

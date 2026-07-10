@@ -25,22 +25,42 @@ const Projects = ({ darkMode }) => {
       description:
         "Developed a centralized platform for all your learning notes.Consolidate and access notes from diverse external sources, providing a one-stop shop for students to access relevant learning materials.\nImplemented an SGPA calculator into the platform,.",
       liveLink: "https://one-library.netlify.app/",
-      githubLink: "https://github.com/apurv212",
+      githubLink: "https://github.com/apurv212/one-note",
       hasCarousel: false
     },
     {
-      image: "/to_do.png",
-      title: "Advance To-Do App",
-      description: "Developed a feature-rich to-do list application, offering CRUD operations, task pinning, and local storage for offline data retention.\nImplemented advanced functionalities like voice-to-text input, date/time-based note retrieval, note locking,sharing tasks, search functionality, and theme customization.",
-      liveLink: "https://apurv-notes-magic.netlify.app/",
-      githubLink: "https://github.com/apurv212",
-      hasCarousel: false
-    },
-    {
-      image: "/spring_boot.png",
-      title: "Spring Boot Application",
+      image: "/My_projects/secure_ai_vault.png",
+      title: "Secure AI Vault",
       description:
-        "A full-stack web application built with Spring Boot and React and Swagger for Api documentation",
+        "A secure web application for storing and managing card details (Credit/Debit, Aadhar, PAN) with AI-powered extraction.\nFeatures: Authentication, Multiple Input Methods (gallery, camera, manual entry), AI-Powered Extraction, Automatic Bank Categorization with filtering, Copy Card Details (number, name, expiry - not CVV), Re-extraction for failed extracts, Skeleton Loaders, and Responsive Design.",
+      liveLink: "https://secure-ai-vault.vercel.app/login",
+      githubLink: "https://github.com/apurv212/Secure-AI-Vault",
+      hasCarousel: false
+    },
+    {
+      image: "/My_projects/zryth_capital.png",
+      title: "Zryth Capital",
+      description:
+        "A freelance client website for a CA (ICAI) firm dealing in unlisted shares, mutual funds, and finance advice. Features live unlisted share prices, investment services, SIP calculator, and partner onboarding.",
+      liveLink: "https://zrythcapital.com/equity-shares",
+      githubLink: "https://github.com/apurv212",
+      hasCarousel: false
+    },
+    {
+      image: "/My_projects/spray_kart.png",
+      title: "Spraykart",
+      description:
+        "A freelance ecommerce website built for a client selling perfumes. Features product catalog, filters, wishlist, cart, and a full shopping experience for luxury fragrances.",
+      liveLink: "https://www.spraykart.com/",
+      githubLink: "https://github.com/apurv212",
+      hasCarousel: false
+    },
+    {
+      image: "/My_projects/oswaal_ai.png",
+      title: "Oswaal AI",
+      description:
+        "Contributed to the development of Oswaal AI for Oswaal Books, a renowned Indian educational publisher.\nBuilt features for AI-powered doubt solving, mock tests, PYQs, and multi-modal learning (PPT, mind maps and Podcast).",
+      liveLink: "https://play.google.com/store/apps/details?id=com.oswaal.ai",
       githubLink: "https://github.com/apurv212",
       hasCarousel: false
     },
@@ -84,7 +104,7 @@ const Projects = ({ darkMode }) => {
             darkMode ? "text-gray-100" : "text-gray-800"
           }`}
         >
-          My Projects
+          Projects
         </h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

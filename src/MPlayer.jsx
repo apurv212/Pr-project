@@ -46,10 +46,8 @@ const MPlayer = ({ darkMode }) => {
       { id: 11, title: '90s Bollywood Mega Dance 2', url: '/music/90/90_s_Bollywood_2.mp3' },
       { id: 12, title: 'Bollywood 90s Wedding Mashup', url: '/music/90/Bollywood_90_s_Wedding.mp3' },
       { id: 13, title: '90s Bollywood Dance 1', url: '/music/90/90s_bollyword_1.mp3' },
-      { id: 14, title: 'Udit Narayan Kumar Sanu Mashup', url: '/music/90/Udit_Narayan_Kumar.mp3' },
       { id: 15, title: '90s Bollywood Mashup 3', url: '/music/90/90_Bollywood_mashuo_3.mp3' },
-      { id: 16, title: 'Himesh Reshammiya Mashup', url: '/music/90/Himesh_Reshammiya_Mashup_1.mp3' },
-      { id: 17, title: 'Dil Laga Liya Mashup', url: '/music/90/Dil_Laga_Liya_mashup.mp3' }
+      { id: 16, title: 'Himesh Reshammiya Mashup', url: '/music/90/Himesh_Reshammiya_Mashup_1.mp3' }
     ],
     mix: [
       // Mix category can include cross-genre mashups
@@ -308,7 +306,7 @@ const MPlayer = ({ darkMode }) => {
       />
 
       {/* Glass Line at Bottom - NO click counter display */}
-      <div className="absolute bottom-1 left-1 z-50" ref={playerRef}>
+      <div className="absolute bottom-1 left-1 z-50 max-w-[calc(100vw-0.5rem)]" ref={playerRef}>
         <div
           onClick={handleLineClick}
           className={`w-1 h-16 cursor-pointer transition-all duration-500 backdrop-blur-sm border border-white/20 relative ${
@@ -329,16 +327,16 @@ const MPlayer = ({ darkMode }) => {
 
         {/* Expanded Panel with Full Glassy Background */}
         <div className={`transition-all duration-500 overflow-hidden ${
-          isExpanded ? 'h-auto opacity-100' : 'h-0 opacity-0'
+          isExpanded ? 'h-auto opacity-100 w-full max-w-md' : 'h-0 opacity-0 w-0 max-w-0'
         }`}>
-          <div className={`backdrop-blur-lg border border-white/30 rounded-t-3xl p-8 relative shadow-2xl ${
+          <div className={`backdrop-blur-lg border border-white/30 rounded-t-3xl p-4 sm:p-8 relative shadow-2xl box-border w-full ${
             darkMode 
               ? 'bg-gray-900/90 text-white border-gray-700/50' 
               : 'bg-white/90 text-gray-800 border-gray-300/50'
           }`}>
             {!selectedCategory ? (
               // Category Selection
-              <div className="grid grid-cols-2 gap-6 min-w-[400px]">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 w-full">
                 <h2 className="col-span-2 text-2xl font-bold text-center mb-4 bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
                   ṁūs̱îĉ Collection
                 </h2>
@@ -375,7 +373,7 @@ const MPlayer = ({ darkMode }) => {
               </div>
             ) : (
               // Music Player
-              <div className="min-w-[500px]">
+              <div className="w-full min-w-0 max-w-full">
                 <div className="flex items-center justify-between mb-6">
                   <h3 className="text-2xl font-bold bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-transparent">
                     {selectedCategory.name}

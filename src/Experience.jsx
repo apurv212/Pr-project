@@ -32,14 +32,14 @@ const Experience = ({ darkMode }) => {
   ];
 
   return (
-    <div className="py-16 px-4 md:px-8">
-      <h2 className={`text-3xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>
+    <div id="experience" className="py-16 px-4 md:px-8 overflow-x-hidden">
+      <h2 className={`text-2xl sm:text-3xl font-bold mb-12 text-center ${darkMode ? 'text-white' : 'text-gray-800'}`}>
         Experience & Education
       </h2>
 
       <div className="relative max-w-4xl mx-auto">
         {/* Vertical Timeline Line */}
-        <div className="absolute left-0 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-400 to-purple-500"></div>
+        <div className="absolute left-4 md:left-1/2 transform md:-translate-x-1/2 h-full w-1 bg-gradient-to-b from-blue-400 to-purple-500"></div>
 
         {experiences.map((exp, index) => (
           <div 
@@ -49,7 +49,7 @@ const Experience = ({ darkMode }) => {
             }`}
           >
             {/* Timeline Dot with Animation */}
-            <div className="absolute left-0 md:left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full z-10">
+            <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full z-10">
               <div className={`w-6 h-6 rounded-full ${exp.type === 'work' ? 'bg-blue-500' : 'bg-purple-500'} relative`}>
                 <div className="absolute inset-0 rounded-full bg-opacity-50 animate-ping" style={{ 
                   backgroundColor: exp.type === 'work' ? 'rgba(59, 130, 246, 0.5)' : 'rgba(168, 85, 247, 0.5)',
@@ -61,8 +61,8 @@ const Experience = ({ darkMode }) => {
             {/* Content */}
             <div className={`md:w-1/2 ${
               index % 2 === 0 ? 'md:pr-16' : 'md:pl-16'
-            } pl-12 md:pl-0`}>
-              <div className="relative p-6 overflow-hidden rounded-lg transition-all duration-300 hover:scale-105"
+            } pl-12 md:pl-0 w-full min-w-0`}>
+              <div className="relative p-4 sm:p-6 overflow-hidden rounded-lg transition-all duration-300 hover:scale-[1.02] sm:hover:scale-105"
                   style={{
                     backdropFilter: 'blur(8px)',
                     backgroundColor: darkMode 
