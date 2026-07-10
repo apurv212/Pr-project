@@ -674,7 +674,7 @@ const Contact = ({ darkMode }) => {
                 }`}
               >
                 <a
-                  href="/apurv_shashvat_resume25.pdf"
+                  href="/Resume/apurv_shashvat.pdf"
                   download="apurv_shashvat.pdf"
                   className="w-full h-full inline-block"
                   onClick={() =>
