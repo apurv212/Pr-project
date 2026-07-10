@@ -27,7 +27,7 @@ const Navbar = ({
         <div className="flex justify-between items-center">
           <div
             className={`text-xl font-bold ${
-              darkMode ? "text-indigo-400" : "text-indigo-600"
+              darkMode ? "text-cyan-400" : "text-cyan-600"
             }`}
           >
             <span className="transition-all duration-300">Apurv Shashvat</span>
@@ -47,8 +47,8 @@ const Navbar = ({
                 }}
                 className={`transition-colors duration-300 ${
                   darkMode
-                    ? "text-gray-300 hover:text-indigo-400"
-                    : "text-gray-600 hover:text-indigo-600"
+                    ? "text-gray-300 hover:text-cyan-400"
+                    : "text-gray-600 hover:text-cyan-600"
                 }`}
               >
                 {item}
@@ -104,8 +104,8 @@ const Navbar = ({
                 }
                 className={`py-3 text-left transition-colors duration-300 ${
                   darkMode
-                    ? "text-gray-300 hover:text-indigo-400"
-                    : "text-gray-600 hover:text-indigo-600"
+                    ? "text-gray-300 hover:text-cyan-400"
+                    : "text-gray-600 hover:text-cyan-600"
                 }`}
               >
                 {item}
