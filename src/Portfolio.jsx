@@ -155,9 +155,13 @@ const Portfolio = () => {
                 }`}
               >
                 <img
-                  src="/apurv_college_coat.png"
+                  src="/apurv_college_coat.webp"
                   alt="Apurv Shashvat - Web Developer"
                   className="w-full h-full object-cover"
+                  width="256"
+                  height="256"
+                  loading="eager"
+                  decoding="async"
                 />
               </div>
             </div>

@@ -20,7 +20,7 @@ const Projects = ({ darkMode }) => {
       hasCarousel: true
     },
     {
-      image: "/one_note.png",
+      image: "/one_note.webp",
       title: "One Note App",
       description:
         "Developed a centralized platform for all your learning notes.Consolidate and access notes from diverse external sources, providing a one-stop shop for students to access relevant learning materials.\nImplemented an SGPA calculator into the platform,.",
@@ -29,7 +29,7 @@ const Projects = ({ darkMode }) => {
       hasCarousel: false
     },
     {
-      image: "/My_projects/secure_ai_vault.png",
+      image: "/My_projects/secure_ai_vault.webp",
       title: "Secure AI Vault",
       description:
         "A secure web application for storing and managing card details (Credit/Debit, Aadhar, PAN) with AI-powered extraction.\nFeatures: Authentication, Multiple Input Methods (gallery, camera, manual entry), AI-Powered Extraction, Automatic Bank Categorization with filtering, Copy Card Details (number, name, expiry - not CVV), Re-extraction for failed extracts, Skeleton Loaders, and Responsive Design.",
@@ -38,7 +38,7 @@ const Projects = ({ darkMode }) => {
       hasCarousel: false
     },
     {
-      image: "/My_projects/zryth_capital.png",
+      image: "/My_projects/zryth_capital.webp",
       title: "Zryth Capital",
       description:
         "A freelance client website for a CA (ICAI) firm dealing in unlisted shares, mutual funds, and finance advice. Features live unlisted share prices, investment services, SIP calculator, and partner onboarding.",
@@ -47,7 +47,7 @@ const Projects = ({ darkMode }) => {
       hasCarousel: false
     },
     {
-      image: "/My_projects/spray_kart.png",
+      image: "/My_projects/spray_kart.webp",
       title: "Spraykart",
       description:
         "A freelance ecommerce website built for a client selling perfumes. Features product catalog, filters, wishlist, cart, and a full shopping experience for luxury fragrances.",
@@ -56,7 +56,7 @@ const Projects = ({ darkMode }) => {
       hasCarousel: false
     },
     {
-      image: "/My_projects/oswaal_ai.png",
+      image: "/My_projects/oswaal_ai.webp",
       title: "Oswaal AI",
       description:
         "Contributed to the development of Oswaal AI for Oswaal Books, a renowned Indian educational publisher.\nBuilt features for AI-powered doubt solving, mock tests, PYQs, and multi-modal learning (PPT, mind maps and Podcast).",
@@ -120,6 +120,8 @@ const Projects = ({ darkMode }) => {
                   src={getCurrentImage(project, i)}
                   alt={`${project.title} - ${project.hasCarousel ? `Image ${(currentImageIndex[i] || 0) + 1}` : 'Preview'}`}
                   className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                  loading="lazy"
+                  decoding="async"
                 />
                 
                 {/* Carousel Controls */}
