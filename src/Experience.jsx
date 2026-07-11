@@ -51,9 +51,9 @@ const Experience = ({ darkMode }) => {
             {/* Timeline Dot with Animation */}
             <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-6 h-6 rounded-full z-10">
               <div className={`w-6 h-6 rounded-full ${exp.type === 'work' ? 'bg-blue-500' : 'bg-purple-500'} relative`}>
-                <div className="absolute inset-0 rounded-full bg-opacity-50 animate-ping" style={{ 
-                  backgroundColor: exp.type === 'work' ? 'rgba(59, 130, 246, 0.5)' : 'rgba(168, 85, 247, 0.5)',
-                  animationDuration: '3s'
+                {/* Static halo — this used to animate-ping forever, once per role. */}
+                <div className="absolute -inset-1 rounded-full -z-10" style={{
+                  backgroundColor: exp.type === 'work' ? 'rgba(59, 130, 246, 0.25)' : 'rgba(168, 85, 247, 0.25)',
                 }}></div>
               </div>
             </div>
@@ -72,20 +72,15 @@ const Experience = ({ darkMode }) => {
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                   }}
               >
-                {/* Animated Border */}
-                <div className="absolute inset-0 animate-borderGlow pointer-events-none" 
+                {/* Static border. This was a masked gradient repainting every
+                    frame, forever, on every card — the costliest effect here. */}
+                <div className="absolute inset-0 pointer-events-none"
                     style={{
-                      background: 'linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.6), transparent)',
-                      backgroundSize: '200% 200%',
-                      animation: 'gradient 3s ease infinite',
-                      backgroundPosition: '200% 50%',
-                      mask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
-                      maskComposite: 'exclude',
-                      padding: '1px',
+                      border: '1px solid rgba(59, 130, 246, 0.35)',
                       borderRadius: 'inherit',
                     }}
                 ></div>
-                
+
                 <h3 className={`text-xl font-bold mb-2 ${darkMode ? 'text-white' : 'text-gray-800'}`}>
                   {exp.title}
                 </h3>

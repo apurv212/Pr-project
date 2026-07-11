@@ -6,6 +6,14 @@ import viteCompression from 'vite-plugin-compression'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Pin the port. If Vite silently falls back to 5174, the browser's origin no
+  // longer matches the blog API's CORS allowlist and every fetch is blocked
+  // (the request returns 200, but the browser refuses to hand it to JS).
+  // strictPort makes a busy port fail loudly instead of drifting.
+  server: {
+    port: 5174,
+    strictPort: true,
+  },
   plugins: [
     react(), 
     tailwindcss(),

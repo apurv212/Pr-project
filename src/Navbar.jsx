@@ -1,6 +1,7 @@
 // Navbar.jsx
 import React from "react";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { Link } from "react-router-dom";
 import ReactGA from "react-ga4";
 
 const Navbar = ({
@@ -11,7 +12,26 @@ const Navbar = ({
   toggleDarkMode,
   scrollToSection,
 }) => {
-  const navItems = ["Home", "About Me", "Experience", "Projects", "Contact"]; // Added "Experience"
+  // Most items scroll to a section on this page; Blog is a route of its own.
+  const navItems = [
+    { label: "Home", section: "home" },
+    { label: "About Me", section: "about-me" },
+    { label: "Experience", section: "experience" },
+    { label: "Projects", section: "projects" },
+    { label: "Blog", to: "/blog" },
+    { label: "Contact", section: "contact" },
+  ];
+
+  const trackClick = (label) =>
+    ReactGA.event({
+      category: "Navigation",
+      action: "Clicked Menu Item",
+      label,
+    });
+
+  const linkClasses = darkMode
+    ? "text-gray-300 hover:text-cyan-400"
+    : "text-gray-600 hover:text-cyan-600";
 
   return (
     <header
@@ -25,35 +45,39 @@ const Navbar = ({
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          <div
+          <Link
+            to="/"
             className={`text-xl font-bold ${
               darkMode ? "text-cyan-400" : "text-cyan-600"
             }`}
           >
             <span className="transition-all duration-300">Apurv Shashvat</span>
-          </div>
+          </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                onClick={() => {
-                  scrollToSection(item.toLowerCase().replace(/\s+/g, "-"));
-                  ReactGA.event({
-                    category: "Navigation",
-                    action: "Clicked Menu Item",
-                    label: item,
-                  });
-                }}
-                className={`transition-colors duration-300 ${
-                  darkMode
-                    ? "text-gray-300 hover:text-cyan-400"
-                    : "text-gray-600 hover:text-cyan-600"
-                }`}
-              >
-                {item}
-              </button>
-            ))}
+            {navItems.map((item) =>
+              item.to ? (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  onClick={() => trackClick(item.label)}
+                  className={`transition-colors duration-300 ${linkClasses}`}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.label}
+                  onClick={() => {
+                    scrollToSection(item.section);
+                    trackClick(item.label);
+                  }}
+                  className={`transition-colors duration-300 ${linkClasses}`}
+                >
+                  {item.label}
+                </button>
+              )
+            )}
 
             <button
               onClick={toggleDarkMode}
@@ -96,21 +120,29 @@ const Navbar = ({
           }`}
         >
           <div className="flex flex-col px-4 py-2">
-            {navItems.map((item) => (
-              <button
-                key={item}
-                onClick={() =>
-                  scrollToSection(item.toLowerCase().replace(/\s+/g, "-"))
-                }
-                className={`py-3 text-left transition-colors duration-300 ${
-                  darkMode
-                    ? "text-gray-300 hover:text-cyan-400"
-                    : "text-gray-600 hover:text-cyan-600"
-                }`}
-              >
-                {item}
-              </button>
-            ))}
+            {navItems.map((item) =>
+              item.to ? (
+                <Link
+                  key={item.label}
+                  to={item.to}
+                  onClick={() => {
+                    trackClick(item.label);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`py-3 text-left transition-colors duration-300 ${linkClasses}`}
+                >
+                  {item.label}
+                </Link>
+              ) : (
+                <button
+                  key={item.label}
+                  onClick={() => scrollToSection(item.section)}
+                  className={`py-3 text-left transition-colors duration-300 ${linkClasses}`}
+                >
+                  {item.label}
+                </button>
+              )
+            )}
           </div>
         </div>
       )}

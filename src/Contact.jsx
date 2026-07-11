@@ -340,9 +340,11 @@ const Contact = ({ darkMode }) => {
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0 pointer-events-none">
         <div className="ai-grid" aria-hidden="true" />
         <div className="ai-glow" aria-hidden="true" />
-        <div className="absolute w-40 h-40 rounded-full bg-cyan-500/15 top-10 left-10 animate-float-slow blur-2xl"></div>
-        <div className="absolute w-64 h-64 rounded-full bg-blue-500/10 bottom-20 right-20 animate-float blur-3xl"></div>
-        <div className="absolute w-24 h-24 rounded-full bg-cyan-400/10 top-40 right-40 animate-float-medium blur-xl"></div>
+        {/* Static colour washes: these previously floated forever behind large
+            blur filters, which was the most expensive thing on the page. */}
+        <div className="absolute w-40 h-40 rounded-full bg-cyan-500/10 top-10 left-10"></div>
+        <div className="absolute w-64 h-64 rounded-full bg-blue-500/[0.07] bottom-20 right-20"></div>
+        <div className="absolute w-24 h-24 rounded-full bg-cyan-400/[0.07] top-40 right-40"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10 max-w-full">
