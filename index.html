@@ -24,7 +24,7 @@
       content="Apurv Shashvat — Full Stack Developer (React, Python, FastAPI). Portfolio of freelance sites, AI apps, and product work including Oswaal AI, Secure AI Vault, and Spraykart."
     />
 
-    <link rel="canonical" href="https://apurv-shashvat.onrender.com/" />
+    <link rel="canonical" href="https://pr-project-puce.vercel.app/" />
 
     <!-- Favicons (local) -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -38,10 +38,10 @@
       property="og:description"
       content="Full Stack Developer specializing in React, Python, and modern web apps. Explore freelance and product projects."
     />
-    <meta property="og:image" content="https://apurv-shashvat.onrender.com/og-image.png" />
+    <meta property="og:image" content="https://pr-project-puce.vercel.app/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:url" content="https://apurv-shashvat.onrender.com/" />
+    <meta property="og:url" content="https://pr-project-puce.vercel.app/" />
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Apurv Shashvat Portfolio" />
 
@@ -52,15 +52,15 @@
       name="twitter:description"
       content="Full Stack Developer specializing in React, Python, and modern web apps."
     />
-    <meta name="twitter:image" content="https://apurv-shashvat.onrender.com/og-image.png" />
+    <meta name="twitter:image" content="https://pr-project-puce.vercel.app/og-image.png" />
 
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "Person",
         "name": "Apurv Shashvat",
-        "url": "https://apurv-shashvat.onrender.com/",
-        "image": "https://apurv-shashvat.onrender.com/og-image.png",
+        "url": "https://pr-project-puce.vercel.app/",
+        "image": "https://pr-project-puce.vercel.app/og-image.png",
         "jobTitle": "Full Stack Web Developer",
         "knowsAbout": [
           "React",
@@ -84,7 +84,7 @@
         "@context": "https://schema.org",
         "@type": "WebSite",
         "name": "Apurv Shashvat Portfolio",
-        "url": "https://apurv-shashvat.onrender.com/",
+        "url": "https://pr-project-puce.vercel.app/",
         "description": "Portfolio of Apurv Shashvat — Full Stack Web Developer.",
         "author": {
           "@type": "Person",
@@ -92,6 +92,36 @@
         }
       }
     </script>
+
+    <!-- Critical CSS, inline on purpose.
+         Tailwind can't cover this moment: Tailwind IS the stylesheet that hasn't
+         loaded yet, so a class="bg-slate-900" does nothing until it arrives. An
+         inline <style> is parsed before first paint with no network request, so
+         the page never flashes white-and-serif while the real CSS is in flight.
+         Values mirror .hero-bg--dark (#070b14) in src/App.css. -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        background-color: #070b14;
+        color: #e5e7eb;
+        font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      /* Unstyled anchors only. A bare "a {color:inherit}" is unlayered, so it
+         outranks Tailwind's layered .text-* utilities and would leave every
+         <Link> near-white while sibling <button>s took their grey. */
+      a:not([class]) {
+        color: inherit;
+      }
+      a {
+        text-decoration: none;
+      }
+      #root {
+        min-height: 100vh;
+      }
+    </style>
   </head>
 
   <body>

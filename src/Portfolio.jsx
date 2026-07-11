@@ -1,20 +1,21 @@
 // Portfolio.jsx
 import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import ReactGA from "react-ga4";
 import Navbar from "./Navbar";
 import Contact from "./Contact";
 import Projects from "./Projectdetails";
-import Experience from "./Experience"; 
-import MPlayer from "./MPlayer";
+import Experience from "./Experience";
+import Footer from "./components/Footer";
 import { ArrowDown, ArrowUp } from "lucide-react";
 
 // Replace your single tracking ID with an array of IDs
 const TRACKING_ID = ["G-3GQBSQFLV6"];
 
-const Portfolio = () => {
+const Portfolio = ({ darkMode, toggleDarkMode }) => {
+  const { hash } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
@@ -22,6 +23,14 @@ const Portfolio = () => {
     ReactGA.initialize(TRACKING_ID);
     ReactGA.send("pageview");
   }, []);
+
+  // Arriving from the blog navbar as "/#experience" — scroll to that section.
+  useEffect(() => {
+    if (!hash) return;
+    document
+      .getElementById(hash.slice(1))
+      ?.scrollIntoView({ behavior: "smooth" });
+  }, [hash]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,18 +55,6 @@ const Portfolio = () => {
       window.removeEventListener("resize", handleScroll);
     };
   }, []);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [darkMode]);
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
 
   const scrollToSection = (sectionId) => {
     const section = document.getElementById(sectionId);
@@ -103,16 +100,8 @@ const Portfolio = () => {
         </div>
 
         <div className="relative text-center px-4 max-w-full">
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 break-words">
-            {text.split("").map((char, index) => (
-              <span
-                key={index}
-                className="inline-block animate-type-repeat"
-                style={{ animationDelay: `${index * 0.1}s` }}
-              >
-                {char === " " ? "\u00A0" : char}
-              </span>
-            ))}
+          <h1 className="hero-fade-in text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 break-words">
+            {text}
           </h1>
           <p className="text-lg sm:text-xl md:text-2xl text-gray-200 mb-8 px-2">
             Full Stack Web Developer, Designer
@@ -127,7 +116,7 @@ const Portfolio = () => {
         </div>
 
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <ArrowDown className="text-white animate-bounce" size={24} />
+          <ArrowDown className="text-white opacity-70" size={24} />
         </div>
       </section>
 
@@ -235,20 +224,7 @@ const Portfolio = () => {
       <Contact darkMode={darkMode} />
 
       {/* Footer */}
-      <footer
-        className={`py-6 text-center relative overflow-x-hidden ${
-          darkMode ? "bg-gray-950 text-gray-500" : "bg-gray-800 text-gray-400"
-        }`}
-      >
-        <div className="container mx-auto px-4">
-          <p className="text-sm sm:text-base break-words">
-            © 2025 Apurv Shashvat - contact for personal website making 7677672641 and SEO boosting
-          </p>
-        </div>
-        
-        {/* Music Player - Only visible in footer */}
-        <MPlayer darkMode={darkMode} />
-      </footer>
+      <Footer darkMode={darkMode} />
 
       {/* Scroll progress + back to top */}
       {showScrollTop && (
