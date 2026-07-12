@@ -296,6 +296,33 @@ html, body {
   height: auto;
 }
 
+/* A YouTube iframe pasted into the post body never reaches the DOM: sanitizing
+   swaps it for a slot that BlogPost fills with the click-to-play facade, so the
+   player's shape and styling live in YouTubeEmbed, not here.
+
+   Instagram's /embed/ page is a portrait card — the post plus its caption — so
+   it gets a centred column rather than the full text width. The height has to be
+   fixed: the iframe is cross-origin, so we can't measure its content, and an
+   unsized one collapses to a ~150px sliver. */
+.blog-body .instagram-embed {
+  margin: 1.5rem auto;
+  max-width: 400px;
+  width: 100%;
+}
+
+.blog-body .instagram-embed iframe {
+  background: #f3f4f6;
+  border: 0;
+  border-radius: 0.5rem;
+  display: block;
+  height: 780px;
+  width: 100%;
+}
+
+.blog-body--dark .instagram-embed iframe {
+  background: #1f2937;
+}
+
 .blog-body blockquote {
   border-left: 3px solid #06b6d4;
   color: #6b7280;
