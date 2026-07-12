@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import viteCompression from 'vite-plugin-compression'
+import { prerenderBlog } from './scripts/prerender.js'
 // import { componentTagger } from "lovable-tagger";
 
 // https://vite.dev/config/
@@ -27,6 +28,12 @@ export default defineConfig({
       algorithm: 'brotliCompress',
       ext: '.br',
     }),
+
+    // Emits dist/blog/<slug>/index.html per post, each with its own title,
+    // description, og:image and self-canonical, plus a sitemap. Without this the
+    // SPA serves the portfolio's <head> on every post URL, which tells Google the
+    // posts are duplicates of the homepage. Runs last: it reads the built shell.
+    prerenderBlog(),
 
     // mode === "development" && componentTagger(),
   ],
