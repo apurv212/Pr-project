@@ -5,10 +5,17 @@ import SiteLayout from "../components/SiteLayout";
 import RelatedStories from "../components/RelatedStories";
 import ShareButton from "../components/ShareButton";
 import LazyImage from "../components/LazyImage";
+import YouTubeEmbed from "../components/YouTubeEmbed";
 import { BlogPostSkeleton } from "../components/Skeleton";
 import { getPost } from "../api/posts";
 import { useApi } from "../hooks/useApi";
-import { formatDate, readingTime, sanitizeHtml } from "../utils/format";
+import {
+  YOUTUBE_SLOT_CLASS,
+  YOUTUBE_SLOT_ID_ATTR,
+  formatDate,
+  readingTime,
+  sanitizeHtml,
+} from "../utils/format";
 
 const BlogPost = ({ darkMode = false, toggleDarkMode }) => {
   const { slug } = useParams();
@@ -30,7 +37,9 @@ const BlogPost = ({ darkMode = false, toggleDarkMode }) => {
   }, [post?.title]);
 
   // The API serves body as HTML; strip anything executable before injecting it.
-  const safeBody = useMemo(() => sanitizeHtml(post?.body), [post?.body]);
+  // Sanitizing also turns any YouTube iframe into an empty slot, which we then
+  // split the body around so a real <YouTubeEmbed> can be rendered in its place.
+  const segments = useMemo(() => splitAtVideoSlots(sanitizeHtml(post?.body)), [post?.body]);
 
   return (
     <SiteLayout darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
@@ -138,22 +147,31 @@ const BlogPost = ({ darkMode = false, toggleDarkMode }) => {
             )}
 
             {post.youtubeEmbedUrl && (
-              <div className="relative w-full mb-10 rounded-lg overflow-hidden shadow-lg aspect-video">
-                <iframe
-                  src={post.youtubeEmbedUrl}
-                  title={post.title}
-                  loading="lazy"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="absolute inset-0 w-full h-full border-0"
-                />
-              </div>
+              <YouTubeEmbed
+                embedUrl={post.youtubeEmbedUrl}
+                watchUrl={post.youtubeUrl}
+                title={post.title}
+                darkMode={darkMode}
+              />
             )}
 
-            <div
-              className={`blog-body ${darkMode ? "blog-body--dark" : ""}`}
-              dangerouslySetInnerHTML={{ __html: safeBody }}
-            />
+            <div className={`blog-body ${darkMode ? "blog-body--dark" : ""}`}>
+              {segments.map((segment, i) =>
+                segment.type === "video" ? (
+                  <YouTubeEmbed
+                    key={`video-${i}-${segment.videoId}`}
+                    videoId={segment.videoId}
+                    title={post.title}
+                    darkMode={darkMode}
+                  />
+                ) : (
+                  <div
+                    key={`html-${i}`}
+                    dangerouslySetInnerHTML={{ __html: segment.html }}
+                  />
+                )
+              )}
+            </div>
 
             <RelatedStories currentSlug={slug} darkMode={darkMode} />
           </>
@@ -161,6 +179,63 @@ const BlogPost = ({ darkMode = false, toggleDarkMode }) => {
       </article>
     </SiteLayout>
   );
+};
+
+/**
+ * Cut sanitized body HTML into an alternating list of HTML runs and video slots:
+ * [{type:"html", html}, {type:"video", videoId}, {type:"html", html}, …]
+ *
+ * A YouTube embed has to be a real React component (it holds click-to-play state
+ * and fetches its own aspect ratio), and dangerouslySetInnerHTML can't host one —
+ * so the body is rendered as several fragments with components between them
+ * rather than as one blob.
+ */
+const splitAtVideoSlots = (html) => {
+  if (!html) return [];
+  if (typeof window === "undefined") return [{ type: "html", html }];
+
+  const doc = new DOMParser().parseFromString(html, "text/html");
+  if (!doc.querySelector(`.${YOUTUBE_SLOT_CLASS}`)) return [{ type: "html", html }];
+
+  // A slot is usually wrapped (<div class="video"><slot></div>). Hoist each one
+  // to the top level first, so the walk below is a flat scan and a wrapper that
+  // also held a caption keeps it instead of being dropped with the iframe.
+  doc.querySelectorAll(`.${YOUTUBE_SLOT_CLASS}`).forEach((slot) => {
+    while (slot.parentElement && slot.parentElement !== doc.body) {
+      const parent = slot.parentElement;
+      const after = parent.cloneNode(false); // same wrapper, for what follows the slot
+
+      while (slot.nextSibling) after.appendChild(slot.nextSibling);
+
+      parent.after(slot);
+      if (after.childNodes.length) slot.after(after);
+      if (!parent.childNodes.length) parent.remove();
+    }
+  });
+
+  const segments = [];
+  let buffer = "";
+
+  const flush = () => {
+    if (buffer.trim()) segments.push({ type: "html", html: buffer });
+    buffer = "";
+  };
+
+  doc.body.childNodes.forEach((node) => {
+    const isSlot =
+      node.nodeType === Node.ELEMENT_NODE && node.classList.contains(YOUTUBE_SLOT_CLASS);
+
+    if (!isSlot) {
+      buffer += node.nodeType === Node.TEXT_NODE ? node.textContent : (node.outerHTML ?? "");
+      return;
+    }
+
+    flush();
+    segments.push({ type: "video", videoId: node.getAttribute(YOUTUBE_SLOT_ID_ATTR) });
+  });
+
+  flush();
+  return segments;
 };
 
 export default BlogPost;
