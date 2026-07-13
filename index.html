@@ -121,6 +121,16 @@
       #root {
         min-height: 100vh;
       }
+      /* The crawlable snapshot below carries no Tailwind classes, so the browser
+         paints it as bare HTML in the frame before React mounts and replaces
+         #root. Crawlers read the DOM, not pixels — hiding it costs nothing for
+         indexing and removes the flash. React's tree mounts as a sibling of
+         these three, so it is unaffected. */
+      #root > header,
+      #root > main,
+      #root > footer {
+        display: none;
+      }
     </style>
   </head>
 
