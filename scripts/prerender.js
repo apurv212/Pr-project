@@ -13,7 +13,14 @@ import { resolve, dirname } from "node:path";
  * So at build time we fetch every post and emit a real
  *   dist/blog/<slug>/index.html
  * carrying that post's own title, description, cover and self-canonical, plus a
- * sitemap listing them. The SPA still hydrates on top — this only fixes <head>.
+ * sitemap listing them.
+ *
+ * The <body> matters as much as the <head>. The shell's #root holds a static
+ * snapshot of the *portfolio* ("Hello, I'm Apurv Shashvat", Projects, Contact),
+ * so rewriting only <head> served metadata about the article wrapped around a
+ * body about something else — which reads to a crawler as a mismatched, thin
+ * page. So #root is replaced with the post's own content too. React hydrates
+ * over it on mount, so nothing changes for users with JS.
  */
 
 const SITE_URL = "https://pr-project-puce.vercel.app";
@@ -33,6 +40,93 @@ const fetchJson = async (url) => {
 };
 
 /**
+ * Swap the shell's #root — a static snapshot of the portfolio — for `inner`.
+ *
+ * Anchored on </body> rather than the module <script>: Vite hoists that script
+ * into <head> at build time, so in dist/index.html it sits *above* #root and is
+ * useless as an end marker. #root is the last element in <body>.
+ */
+const replaceRoot = (shell, inner) => {
+  const next = shell.replace(
+    /<div id="root">[\s\S]*<\/div>\s*(?=<\/body>)/,
+    `<div id="root">\n${inner}\n    </div>\n  `
+  );
+  if (next === shell) {
+    // The shell changed shape and the body is still the portfolio. Failing loud
+    // beats shipping a build that looks fine and silently re-breaks indexing.
+    throw new Error("[prerender] could not find #root in shell — aborting build");
+  }
+  return next;
+};
+
+const formatDate = (iso) =>
+  iso
+    ? new Date(iso).toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      })
+    : "";
+
+/** Crawlable body for one post: the article itself, not the portfolio. */
+const renderPostBody = (post) => {
+  const heading = escapeHtml(post.title || post.meta_title);
+  const date = post.published_at
+    ? `<time datetime="${escapeHtml(post.published_at)}">${escapeHtml(
+        formatDate(post.published_at)
+      )}</time>`
+    : "";
+  const cover = post.cover_image
+    ? `<img src="${escapeHtml(post.cover_image)}" alt="${heading}" width="1200" height="630" />`
+    : "";
+
+  return `      <header>
+        <p>Tech News</p>
+        <nav aria-label="Primary"><a href="/">Home</a> <a href="/blog">Blog</a></nav>
+      </header>
+
+      <main>
+        <article>
+          <h1>${heading}</h1>
+          <p>By ${escapeHtml(post.author || "Apurv Shashvat")} ${date}</p>
+          ${cover}
+          ${post.body || ""}
+        </article>
+      </main>`;
+};
+
+/** Crawlable body for /blog: a real list of links, so the posts are discoverable. */
+const renderBlogListBody = (posts) => {
+  const items = posts
+    .map((post) => {
+      const heading = escapeHtml(post.title || post.meta_title);
+      const date = post.published_at
+        ? `<time datetime="${escapeHtml(post.published_at)}">${escapeHtml(
+            formatDate(post.published_at)
+          )}</time>`
+        : "";
+      return `          <li>
+            <h2><a href="/blog/${escapeHtml(post.slug)}">${heading}</a></h2>
+            ${date}
+            <p>${escapeHtml(post.meta_description || "")}</p>
+          </li>`;
+    })
+    .join("\n");
+
+  return `      <header>
+        <p>Tech News</p>
+        <nav aria-label="Primary"><a href="/">Home</a> <a href="/blog">Blog</a></nav>
+      </header>
+
+      <main>
+        <h1>Tech News</h1>
+        <ul>
+${items}
+        </ul>
+      </main>`;
+};
+
+/**
  * Rewrite the <head> of the SPA shell for one post.
  *
  * Every tag is *replaced*, never appended: the shell already carries the
@@ -41,7 +135,12 @@ const fetchJson = async (url) => {
  */
 const renderPostHtml = (shell, post) => {
   const url = `${SITE_URL}/blog/${post.slug}`;
-  const title = escapeHtml(post.meta_title || post.title);
+  // meta_title arrives pre-truncated to ~60 chars with a trailing "…", which is
+  // right for <title> (a display budget) and wrong everywhere else: a headline
+  // or share card ending mid-word is a quality signal against us. Those get the
+  // full title.
+  const tabTitle = escapeHtml(post.meta_title || post.title);
+  const fullTitle = escapeHtml(post.title || post.meta_title);
   const description = escapeHtml(post.meta_description || "");
   const image = post.cover_image
     ? escapeHtml(post.cover_image)
@@ -50,7 +149,7 @@ const renderPostHtml = (shell, post) => {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: post.meta_title || post.title,
+    headline: post.title || post.meta_title,
     description: post.meta_description || undefined,
     image: post.cover_image || undefined,
     datePublished: post.published_at || undefined,
@@ -60,8 +159,8 @@ const renderPostHtml = (shell, post) => {
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
   };
 
-  return shell
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${title}</title>`)
+  return replaceRoot(shell, renderPostBody(post))
+    .replace(/<title>[\s\S]*?<\/title>/, `<title>${tabTitle}</title>`)
     .replace(
       /<meta\s+name="description"[\s\S]*?\/>/,
       `<meta name="description" content="${description}" />`
@@ -69,7 +168,7 @@ const renderPostHtml = (shell, post) => {
     .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${url}" />`)
     .replace(
       /<meta property="og:title"[^>]*>/,
-      `<meta property="og:title" content="${title}" />`
+      `<meta property="og:title" content="${fullTitle}" />`
     )
     .replace(
       /<meta\s+property="og:description"[\s\S]*?\/>/,
@@ -86,7 +185,7 @@ const renderPostHtml = (shell, post) => {
     )
     .replace(
       /<meta name="twitter:title"[^>]*>/,
-      `<meta name="twitter:title" content="${title}" />`
+      `<meta name="twitter:title" content="${fullTitle}" />`
     )
     .replace(
       /<meta\s+name="twitter:description"[\s\S]*?\/>/,
@@ -159,6 +258,27 @@ export const prerenderBlog = () => ({
 
       console.log(`[prerender] blog/${post.slug}/index.html`);
     }
+
+    // /blog served the portfolio snapshot too, so the list page offered a
+    // crawler no links to the posts — nothing to follow, nothing to discover.
+    const listUrl = `${SITE_URL}/blog`;
+    const listHtml = replaceRoot(shell, renderBlogListBody(posts))
+      .replace(/<title>[\s\S]*?<\/title>/, "<title>Tech News — Latest AI &amp; Tech Updates</title>")
+      .replace(
+        /<meta\s+name="description"[\s\S]*?\/>/,
+        '<meta name="description" content="Tech News — the latest on AI tools, models, and developer tooling." />'
+      )
+      .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${listUrl}" />`)
+      .replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${listUrl}" />`)
+      .replace(
+        /<meta property="og:title"[^>]*>/,
+        '<meta property="og:title" content="Tech News — Latest AI &amp; Tech Updates" />'
+      );
+
+    const listFile = resolve(dist, "blog", "index.html");
+    await mkdir(dirname(listFile), { recursive: true });
+    await writeFile(listFile, listHtml, "utf8");
+    console.log(`[prerender] blog/index.html — ${posts.length} posts linked`);
 
     await writeFile(resolve(dist, "sitemap.xml"), renderSitemap(posts), "utf8");
     console.log(`[prerender] sitemap.xml — ${posts.length + 2} urls\n`);
