@@ -85,7 +85,9 @@ const RelatedStories = ({ currentSlug, darkMode }) => {
   const showSection = isLoading || hasPosts;
 
   return (
-    <section ref={sectionRef} className="mt-14">
+    // mt-14 spaces it below the article on mobile; in the desktop sidebar it sits
+    // beside the article, so the gap is dropped and it aligns with the title.
+    <section ref={sectionRef} className="mt-14 lg:mt-0">
       {showSection && (
         <h2
           className={`mb-5 border-l-4 border-cyan-500 pl-3 text-xl font-bold ${
