@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://pr-project-puce.vercel.app/sitemap.xml
+Sitemap: https://apurvshashvat.tech/sitemap.xml

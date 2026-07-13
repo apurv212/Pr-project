@@ -23,7 +23,11 @@ import { resolve, dirname } from "node:path";
  * over it on mount, so nothing changes for users with JS.
  */
 
-const SITE_URL = "https://pr-project-puce.vercel.app";
+// The canonical domain. Every self-canonical, og:url and sitemap <loc> is built
+// from this, so it must be the one domain we want indexed — pr-project-puce
+// .vercel.app now 301s here, and pointing these back at it would tell Google to
+// index the redirect source instead.
+const SITE_URL = "https://apurvshashvat.tech";
 const API_BASE = process.env.VITE_API_BASE_URL || "https://apurv212.pythonanywhere.com";
 
 const escapeHtml = (value = "") =>
