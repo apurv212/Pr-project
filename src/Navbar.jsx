@@ -1,7 +1,7 @@
 // Navbar.jsx
 import React from "react";
 import { Menu, X, Sun, Moon } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ReactGA from "react-ga4";
 
 const Navbar = ({
@@ -21,6 +21,10 @@ const Navbar = ({
     { label: "Blog", to: "/blog" },
     { label: "Contact", section: "contact" },
   ];
+
+  const { pathname } = useLocation();
+  const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
+  const brandLabel = isBlog ? "Tech News" : "Apurv Shashvat";
 
   const trackClick = (label) =>
     ReactGA.event({
@@ -51,7 +55,7 @@ const Navbar = ({
               darkMode ? "text-cyan-400" : "text-cyan-600"
             }`}
           >
-            <span className="transition-all duration-300">Apurv Shashvat</span>
+            <span className="transition-all duration-300">{brandLabel}</span>
           </Link>
 
           <nav className="hidden md:flex items-center space-x-8">
