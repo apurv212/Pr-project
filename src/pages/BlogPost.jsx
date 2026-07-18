@@ -43,7 +43,7 @@ const BlogPost = ({ darkMode = false, toggleDarkMode }) => {
 
   return (
     <SiteLayout darkMode={darkMode} toggleDarkMode={toggleDarkMode}>
-      <article className="container mx-auto px-5 sm:px-6 pt-4 pb-12 sm:pt-10 sm:pb-16 max-w-3xl">
+      <article className="container mx-auto px-5 sm:px-6 pt-4 pb-12 sm:pt-10 sm:pb-16 max-w-3xl lg:max-w-6xl">
         <Link
           to="/blog"
           className={`inline-flex items-center gap-1.5 text-sm mb-5 sm:mb-8 transition-colors ${
@@ -94,7 +94,10 @@ const BlogPost = ({ darkMode = false, toggleDarkMode }) => {
         )}
 
         {!isLoading && !error && post && (
-          <>
+          // Article + sidebar sit side by side from `lg` up; below that the
+          // sidebar falls back under the body, which is the mobile layout.
+          <div className="lg:flex lg:items-start lg:gap-10">
+            <div className="min-w-0 lg:flex-1">
             <header className="mb-8">
               <h1
                 className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-4 leading-tight text-balance ${
@@ -173,8 +176,13 @@ const BlogPost = ({ darkMode = false, toggleDarkMode }) => {
               )}
             </div>
 
-            <RelatedStories currentSlug={slug} darkMode={darkMode} />
-          </>
+            </div>
+
+            {/* `top-24` clears the fixed header when the sidebar sticks. */}
+            <aside className="lg:sticky lg:top-24 lg:w-72 lg:flex-none xl:w-80">
+              <RelatedStories currentSlug={slug} darkMode={darkMode} />
+            </aside>
+          </div>
         )}
       </article>
     </SiteLayout>
