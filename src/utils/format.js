@@ -2,6 +2,8 @@
  * Presentation helpers shared by anything that renders post content.
  */
 
+import { API_BASE_URL } from "../api/client";
+
 /** "2026-07-11T12:36:54.082497Z" -> "11 July 2026" */
 export const formatDate = (iso) => {
   if (!iso) return "";
@@ -120,6 +122,17 @@ export const youtubeVideoId = (src) => {
 const isSafeUrl = (value) =>
   !/^\s*(javascript|data|vbscript):/i.test((value ?? "").trim());
 
+/**
+ * The API serves media as root-relative paths (`/media/uploads/…`). Injected
+ * into our page those resolve against the frontend origin and 404, so rewrite
+ * them onto the API host. Absolute URLs and in-page anchors are left alone.
+ */
+const absolutizeUrl = (value) => {
+  const trimmed = (value ?? "").trim();
+  if (!trimmed.startsWith("/") || trimmed.startsWith("//")) return value;
+  return `${API_BASE_URL}${trimmed}`;
+};
+
 export const sanitizeHtml = (html) => {
   if (!html || typeof window === "undefined") return "";
 
@@ -172,7 +185,11 @@ export const sanitizeHtml = (html) => {
 
       if (!ALLOWED_ATTRS.has(attr) || (isUrlAttr && !isSafeUrl(value))) {
         el.removeAttribute(name);
+        return;
       }
+
+      // Point root-relative media (/media/…) at the API host, not our origin.
+      if (isUrlAttr) el.setAttribute(name, absolutizeUrl(value));
     });
 
     if (tag === "a") {
