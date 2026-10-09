@@ -9,7 +9,7 @@ const Footer = ({ darkMode }) => (
   >
     <div className="container mx-auto px-4">
       <p className="text-sm sm:text-base break-words">
-        © 2025 Apurv Shashvat - contact for personal website making 7677672641 and SEO boosting
+        © 2025 Apurv Shashvat - contact for personal website making and SEO boosting
       </p>
     </div>
 

@@ -19,15 +19,15 @@ const Projects = ({ darkMode }) => {
       githubLink: "https://github.com/apurv212",
       hasCarousel: true
     },
-    {
-      image: "/one_note.webp",
-      title: "One Note App",
-      description:
-        "Developed a centralized platform for all your learning notes.Consolidate and access notes from diverse external sources, providing a one-stop shop for students to access relevant learning materials.\nImplemented an SGPA calculator into the platform,.",
-      liveLink: "https://one-library.netlify.app/",
-      githubLink: "https://github.com/apurv212/one-note",
-      hasCarousel: false
-    },
+    // {
+    //   image: "/one_note.webp",
+    //   title: "One Note App",
+    //   description:
+    //     "Developed a centralized platform for all your learning notes.Consolidate and access notes from diverse external sources, providing a one-stop shop for students to access relevant learning materials.\nImplemented an SGPA calculator into the platform,.",
+    //   liveLink: "https://one-library.netlify.app/",
+    //   githubLink: "https://github.com/apurv212/one-note",
+    //   hasCarousel: false
+    // },
     {
       image: "/My_projects/secure_ai_vault.webp",
       title: "Secure AI Vault",

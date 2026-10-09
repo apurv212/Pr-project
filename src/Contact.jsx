@@ -638,27 +638,6 @@ const Contact = ({ darkMode }) => {
                 GitHub
               </span>
             </a>
-            
-            <a
-              href="https://wa.me/+917677672641"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center group animate-item opacity-0 transition-all duration-500 transform translate-y-6"
-              onClick={() =>
-                ReactGA.event({
-                  category: "Contact",
-                  action: "Clicked WhatsApp Link",
-                  label: "WhatsApp",
-                })
-              }
-            >
-              <div className={`p-3 rounded-full mr-3 shrink-0 ${darkMode ? "bg-slate-800" : "bg-slate-700"} group-hover:scale-110 transition-all duration-300`}>
-                <MessageCircle className="group-hover:text-cyan-300 transition-colors" size={20} />
-              </div>
-              <span className="group-hover:text-cyan-300 transition-colors">
-                WhatsApp
-              </span>
-            </a>
           </div>
           
           <div className="mt-12 sm:mt-16 text-center px-2">
